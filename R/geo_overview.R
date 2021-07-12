@@ -28,3 +28,4 @@ geo_overview <- function(path = getwd(), folder){
 }
 
 #geo_overview(folder = "sub")
+#devtools::install_local()
