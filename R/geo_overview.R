@@ -1,7 +1,8 @@
-#' show overview of geodata.
+#' show overview of geodata
 #' @param path the path to the dropbox folder
 #' @return a list with folder names
 #' @export
+#' @examples
 #' \dontrun{
 #' geo_overview()
 #' }
@@ -26,6 +27,6 @@ geo_overview <- function(path = getwd(), folder){
 
 
 }
+#devtools::install_local(force = TRUE)
+# d6geodata::geo_overview(folder = "sub")
 
-#geo_overview(folder = "sub")
-#devtools::install_local()

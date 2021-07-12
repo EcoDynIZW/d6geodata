@@ -2,7 +2,7 @@
 % Please edit documentation in R/geo_overview.R
 \name{geo_overview}
 \alias{geo_overview}
-\title{show overview of geodata.}
+\title{show overview of geodata}
 \usage{
 geo_overview(path = getwd(), folder)
 }
@@ -13,5 +13,10 @@ geo_overview(path = getwd(), folder)
 a list with folder names
 }
 \description{
-show overview of geodata.
+show overview of geodata
+}
+\examples{
+\dontrun{
+geo_overview()
+}
 }
