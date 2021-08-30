@@ -7,7 +7,7 @@
 #' geo_overview()
 #' }
 
-geo_overview <- function(path = getwd(), folder){
+geo_overview <- function(path = getwd(), folder = c("sub","main")[utils::menu(c("sub","main"), title = "choose folder:")]){
   # show main folders
 
   main_fold <- list.dirs(here::here(path, "data-raw"), recursive = FALSE, full.names = FALSE)
@@ -28,5 +28,8 @@ geo_overview <- function(path = getwd(), folder){
 
 }
 #devtools::install_local(force = TRUE)
-# d6geodata::geo_overview(folder = "sub")
+# d6geodata::geo_overview(path = "C:/Users/wenzler/PopDynIZW Dropbox/GeoData/",folder = "main")
+
+# c("sub","main")[utils::menu(c("sub","main"), title = "choose folder:")]
+# base::readline("choose folder:", c("sub","main"))
 

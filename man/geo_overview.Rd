@@ -4,7 +4,10 @@
 \alias{geo_overview}
 \title{show overview of geodata}
 \usage{
-geo_overview(path = getwd(), folder)
+geo_overview(
+  path = getwd(),
+  folder = c("sub", "main")[utils::menu(c("sub", "main"), title = "choose folder:")]
+)
 }
 \arguments{
 \item{path}{the path to the dropbox folder}
