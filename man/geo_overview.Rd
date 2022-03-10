@@ -5,8 +5,7 @@
 \title{show overview of geodata}
 \usage{
 geo_overview(
-  path = getwd(),
-  folder = c("sub", "main")[utils::menu(c("sub", "main"), title = "choose folder:")]
+  folder = c("main", "sub")[utils::menu(c("main", "sub"), title = "choose folder:")]
 )
 }
 \arguments{
