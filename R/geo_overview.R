@@ -1,5 +1,4 @@
 #' show overview of geodata
-#' @param path the path to the dropbox folder
 #' @return a list with folder names
 #' @export
 #' @examples
