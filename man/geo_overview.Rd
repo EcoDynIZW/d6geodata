@@ -8,9 +8,6 @@ geo_overview(
   folder = c("main", "sub")[utils::menu(c("main", "sub"), title = "choose folder:")]
 )
 }
-\arguments{
-\item{path}{the path to the dropbox folder}
-}
 \value{
 a list with folder names
 }
