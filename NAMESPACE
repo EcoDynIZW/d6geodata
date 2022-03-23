@@ -3,4 +3,5 @@
 export("%>%")
 export(build_meta_file)
 export(geo_overview)
+export(render_geodata)
 importFrom(magrittr,"%>%")
