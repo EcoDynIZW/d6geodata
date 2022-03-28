@@ -45,7 +45,7 @@ build_meta_file <- function(path = "."){
     doit <- c("Yes", "No")[utils::menu(c("Yes", "No"), title = "Do you want to change something?")]
   }
 
-  xlsx::write.csv(data, base::paste0(path, "/meta_data_", data$name, ".csv"),
+  utilswrite.csv(data, base::paste0(path, "/meta_data_", data$name, ".csv"),
                    row.names = FALSE)
   return(data)
 }
