@@ -19,7 +19,8 @@ build_meta_file <- function(path = "."){
                         units_of_data = NA,
                         link = NA,
                         date_of_download = NA,
-                        modified = NA)
+                        modified = NA,
+                        dropbox_link = NA)
 
   doit <- "Yes"
 
@@ -36,7 +37,8 @@ build_meta_file <- function(path = "."){
         units_of_data = ifelse(is.na(data$units_of_data), base::readline("units of data:"), data$units_of_data),
         link = ifelse(is.na(data$link), base::readline("link to source:"), data$link),
         date_of_download = ifelse(is.na(data$date_of_download), fun_date(""), data$date_of_download),
-        modified = ifelse(is.na(data$modified), base::readline("modified?:"), data$modified)
+        modified = ifelse(is.na(data$modified), base::readline("modified?:"), data$modified),
+        dropbox_link = base::gsub("dl=0", "dl=1", ifelse(is.na(data$dropbox_link), base::readline("dropbox link:"), data$dropbox_link))
       ) %>%
       dplyr::mutate_each(dplyr::funs(empty_as_na))
 
@@ -117,3 +119,4 @@ fun_epsg <- function(){
   }
   return(epsg_in)
 }
+
