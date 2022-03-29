@@ -10,5 +10,7 @@
 render_geodata <-
   function(meta_path, tif_path) {
     rmarkdown::render(here::here("R", "geodata_template_html.Rmd"),
-                      output_format = "html_document")
+                      output_format = "html_document",
+                      output_dir = path,
+                      output_file = unlist(stringi::stri_split(path, regex = "/"))[length(unlist(stringi::stri_split(path, regex = "/")))])
   }
