@@ -19,6 +19,8 @@ get_geodata <- function(data_name, download_data){
 
        raster::writeRaster(tif, here::here(base::gsub("_tif", ".tif", data_name)))
 
+
+
      }
 
   return(tif)
