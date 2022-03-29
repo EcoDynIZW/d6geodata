@@ -4,7 +4,7 @@
 \alias{render_geodata}
 \title{function for rendering an markdown to get an html of available geodata}
 \usage{
-render_geodata(meta_path, tif_path)
+render_geodata(path)
 }
 \arguments{
 \item{path}{The path where the data has to be stored}
