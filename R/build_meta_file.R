@@ -19,8 +19,7 @@ build_meta_file <- function(path = "."){
                         units_of_data = NA,
                         link = NA,
                         date_of_download = NA,
-                        modified = NA,
-                        dropbox_link = NA)
+                        modified = NA)
 
   doit <- "Yes"
 
