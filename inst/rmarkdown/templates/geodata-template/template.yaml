@@ -1,4 +1,0 @@
-name: geodata template
-description: >
-   This template helps to load in data, process the data and create all neccessary files in the end
-create_dir: FALSE

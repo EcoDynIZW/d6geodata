@@ -1,0 +1,4 @@
+name: geodata_raw_data_temp
+description: >
+   A template to help to save raw data in a standardised way
+create_dir: FALSE

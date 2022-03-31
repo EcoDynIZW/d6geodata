@@ -31,6 +31,13 @@ sapply(list("sf", "tidyverse", "raster", "terra", "here" , "d6geodata"),
        library, character.only = TRUE, logical.return = TRUE)
 ```
 
+# create folder
+
+```{r}
+path <- here("data-poc") # edit the path
+
+dir.create(path = path)
+```
 
 # Data
 
@@ -56,16 +63,14 @@ sapply(list("sf", "tidyverse", "raster", "terra", "here" , "d6geodata"),
 # create meta data file
 
 ```{r}
-d6geodata::build_meta_file(path = here())
+d6geodata::build_meta_file(path = path)
 ```
 
 # create html file
 
 ```{r}
-d6geodata::render_geodata(path = here())
+d6geodata::render_geodata(path = path)
 ```
-
-
 
 ***
 

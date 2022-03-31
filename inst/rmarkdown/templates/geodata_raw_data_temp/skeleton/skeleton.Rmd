@@ -1,0 +1,83 @@
+---
+title: "Your Project: Data Preparation" 
+description: |
+    The aim of this study is...
+author:
+    - name: ""
+      url: 
+      affiliation: Leibniz Institute for Zoo and Wildlife Research
+      affiliation_url: https://izw-berlin.de/en/
+      orcid_id: 
+date: "`r Sys.Date()`"
+output: 
+    distill::distill_article:
+        highlight: kate
+        code_folding: false  
+        toc: true            
+        toc_depth: 2         
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = TRUE, message = TRUE,
+                      fig.width = 9, fig.height = 6, dpi = 500, 
+                      retina = 1, fig.showtext = TRUE)
+```
+
+# Setup
+
+```{r packages}
+sapply(list("sf", "tidyverse", "raster", "terra", "here" , "d6geodata"), 
+       library, character.only = TRUE, logical.return = TRUE)
+```
+
+# create folder
+
+```{r}
+path <- here("data-raw") # edit the path
+
+dir.create(path = path)
+```
+
+# Data
+
+```{r data}
+(germany_3035_sf <- st_read(here("data-raw", 
+                                 "germany",
+                                 "administrative_units_germany_2020_28532_bkg_shp",
+                                 "vg2500_01-01.utm32s.shape", 
+                                 "vg2500",
+                                 "vg2500_lan.shp")) %>% 
+   dplyr::select(GEN) %>% 
+   st_transform(3035)
+ )
+
+```
+
+# create meta data file
+
+```{r}
+d6geodata::build_meta_file(path = path)
+```
+
+# create html file
+
+```{r}
+d6geodata::render_geodata(path = path)
+```
+
+
+
+***
+
+<details><summary>Session Info</summary>
+
+```{r sessionInfo}
+## DO NOT REMOVE!
+Sys.time()
+#git2r::repository() ## uncomment if you are using GitHub
+sessionInfo()
+```
+
+</details>
+
