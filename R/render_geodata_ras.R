@@ -8,7 +8,7 @@
 #' }
 
 render_geodata_ras <-
-  function(path) {
+  function(path, folder_name) {
     rmarkdown::render(here::here("R", "geodata_template_raster_html.Rmd"),
                       output_format = "html_document",
                       output_dir = path,

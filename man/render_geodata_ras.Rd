@@ -4,7 +4,7 @@
 \alias{render_geodata_ras}
 \title{function for rendering an markdown to get an html of available geodata}
 \usage{
-render_geodata_ras(path)
+render_geodata_ras(path, folder_name)
 }
 \arguments{
 \item{path}{The path where the data has to be stored}
