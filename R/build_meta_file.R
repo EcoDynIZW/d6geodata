@@ -15,10 +15,12 @@ build_meta_file <- function(path = "."){
                         crs = NA,
                         epsg = NA,
                         year_of_data = NA,
-                        short_description = NA,
                         units_of_data = NA,
-                        link = NA,
+                        type_of_data = NA,
+                        source = NA,
+                        link_of_source = NA,
                         date_of_download = NA,
+                        short_description = NA,
                         modified = NA)
 
   doit <- "Yes"
@@ -32,10 +34,12 @@ build_meta_file <- function(path = "."){
         crs = ifelse(is.na(data$crs), base::readline("projection name:"), data$crs),
         epsg = ifelse(is.na(data$epsg), fun_epsg(), data$epsg),
         year_of_data = ifelse(is.na(data$year_of_data), fun_num("year of data"), data$year_of_data),
-        short_description = ifelse(is.na(data$short_description), base::readline("short description:"), data$short_description),
+        type_of_data = ifelse(is.na(data$type_of_data), base::readline("type of data:"), data$type_of_data),
         units_of_data = ifelse(is.na(data$units_of_data), base::readline("units of data:"), data$units_of_data),
-        link = ifelse(is.na(data$link), base::readline("link to source:"), data$link),
+        source = ifelse(is.na(data$source), base::readline("source of data:"), data$source),
+        link_of_source = ifelse(is.na(data$link_of_source), base::readline("link to source:"), data$link_of_source),
         date_of_download = ifelse(is.na(data$date_of_download), fun_date(""), data$date_of_download),
+        short_description = ifelse(is.na(data$short_description), base::readline("short description:"), data$short_description),
         modified = ifelse(is.na(data$modified), base::readline("modified?:"), data$modified)
       ) %>%
       dplyr::mutate_each(dplyr::funs(empty_as_na))
@@ -58,11 +62,10 @@ build_meta_file <- function(path = "."){
 
 # function for dates
 fun_date <- function(x){
-  date_in <- base::readline(base::paste0("enter date ", x,": "))
-  while(base::class(try(assertthat::is.date(base::as.Date(date_in)), silent = TRUE)) == "try-error"){
-    print("wrong format. Enter date as following: 2017-01-01")
-    date_in <- base::readline(base::paste0("enter date ", x,": "))
-  }
+  date_in <- paste(base::readline(base::paste0("enter year ", x,": ")),
+                   base::readline(base::paste0("enter month ", x,": ")),
+                   base::readline(base::paste0("enter day ", x,": ")),
+                   sep = "-")
   return(date_in)
 }
 
