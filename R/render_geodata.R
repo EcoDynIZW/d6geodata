@@ -8,8 +8,9 @@
 #' }
 
 render_geodata <-
-  function(path) {
+  function(path, data_name = "") {
     rmarkdown::render(here::here("R", "geodata_template_html.Rmd"),
+                      data_name = data_name,
                       output_format = "html_document",
                       output_dir = path,
                       output_file = unlist(stringi::stri_split(path, regex = "/"))[length(unlist(stringi::stri_split(path, regex = "/")))])
