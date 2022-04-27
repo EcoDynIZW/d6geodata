@@ -8,7 +8,7 @@
 #' }
 
 render_geodata <-
-  function(path, data_name = "") {
+  function(path, data_name) {
     rmarkdown::render(here::here("R", "geodata_template_html.Rmd"),
                       data_name = data_name,
                       output_format = "html_document",
