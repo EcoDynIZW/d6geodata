@@ -12,6 +12,7 @@ move_to_distill <-
     base::file.rename(from = base::file.path("C:/Users/wenzler/Documents/GitHub/d6geodatabase",
                                  "geodata_template_html.Rmd"),
                 to = base::file.path("C:/Users/wenzler/Documents/GitHub/d6geodatabase",
-                                     base::unlist(stringi::stri_split(path, regex = "/"))[length(base::unlist(stringi::stri_split(path, regex = "/")))]))
+                                     paste0(base::unlist(stringi::stri_split(path, regex = "/"))[length(base::unlist(stringi::stri_split(path, regex = "/")))],
+                                            ".rmd")))
                      # output_file = unlist(stringi::stri_split(path, regex = "/"))[length(unlist(stringi::stri_split(path, regex = "/")))])
   }
