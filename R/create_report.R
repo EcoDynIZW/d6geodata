@@ -35,7 +35,9 @@ sapply(list('tidyverse', 'here', 'ggplot2', 'raster', 'terra', 'cowplot'),
 ```{r, include = FALSE}
 path <- ",paste0('"', paste(out_path, path_name, sep = "/"), '"'),"
 
-meta <- utils::read.csv(list.files(path, pattern = '.csv$', recursive = TRUE, full.names = TRUE)) %>%
+meta_raw <- utils::read.csv2(list.files(path, pattern = '.csv$', recursive = TRUE, full.names = TRUE))
+
+meta_tab <- meta_raw %>%
   dplyr::mutate(dplyr::across(dplyr::everything(), as.character)) %>%
       tidyr::pivot_longer(cols = dplyr::everything(),
                           names_to = 'column', values_to = 'input') %>%
@@ -50,7 +52,7 @@ tif <- raster::raster(list.files(path, pattern = '.tif$', recursive = TRUE, full
 text_plot <- ggplot2::ggplot() +
   ggplot2::theme_void() +
   ggplot2::annotation_custom(
-grid::rasterGrob(meta %>% flextable::as_raster()), xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf)
+grid::rasterGrob(meta_tab %>% flextable::as_raster()), xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf)
 
 title <- ggdraw() +
   draw_label(
