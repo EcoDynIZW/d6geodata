@@ -4,7 +4,10 @@
 \alias{move_to_distill}
 \title{function for copying the geodata template, adding the paths and rename it to the corresponding data}
 \usage{
-move_to_distill(path)
+move_to_distill(
+  path,
+  to_path = "C:/Users/wenzler/Documents/GitHub/d6geodatabase"
+)
 }
 \arguments{
 \item{path}{The path where the data lays}
