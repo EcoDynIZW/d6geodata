@@ -17,9 +17,10 @@ build_meta_file <- function(path = "."){
                         year_of_data = NA,
                         units_of_data = NA,
                         type_of_data = NA,
+                        type_of_file = NA,
                         source = NA,
                         link_of_source = NA,
-                        date_of_download = NA,
+                        date_of_compile = NA,
                         short_description = NA,
                         modified = NA)
 
@@ -34,11 +35,12 @@ build_meta_file <- function(path = "."){
         crs = ifelse(is.na(data$crs), base::readline("projection name:"), data$crs),
         epsg = ifelse(is.na(data$epsg), fun_epsg(), data$epsg),
         year_of_data = ifelse(is.na(data$year_of_data), fun_num("year of data"), data$year_of_data),
-        type_of_data = ifelse(is.na(data$type_of_data), base::readline("type of data:"), data$type_of_data),
+        type_of_data = ifelse(is.na(data$type_of_data), fun_type(), data$type_of_data),
+        type_of_file = ifelse(is.na(data$type_of_file), fun_file(), data$type_of_file),
         units_of_data = ifelse(is.na(data$units_of_data), base::readline("units of data:"), data$units_of_data),
         source = ifelse(is.na(data$source), base::readline("source of data:"), data$source),
         link_of_source = ifelse(is.na(data$link_of_source), base::readline("link to source:"), data$link_of_source),
-        date_of_download = ifelse(is.na(data$date_of_download), fun_date(""), data$date_of_download),
+        date_of_download = Sys.Date(),
         short_description = ifelse(is.na(data$short_description), base::readline("short description:"), data$short_description),
         modified = ifelse(is.na(data$modified), base::readline("modified?:"), data$modified)
       ) %>%
@@ -121,3 +123,37 @@ fun_epsg <- function(){
   return(epsg_in)
 }
 
+# function for type of data
+fun_type <- function(){
+  file_in <-
+    c(
+      "unordered_categorical",
+      "ordered_categorical",
+      "binary_categorical",
+      "continual_numeric",
+      "discrete_numeric"
+    )[utils::menu(
+      c(
+        "unordered_categorical",
+        "ordered_categorical",
+        "binary_categorical",
+        "continual_numeric",
+        "discrete_numeric"
+      ),
+      title = "choose file type:"
+    )]
+  return(file_in)
+}
+
+# function for type of file
+fun_file <- function(){
+  file_in <- c(".asc", ".tif", ".shp", ".gpkg", ".geojson", "other")[utils::menu(c(".asc", ".tif", ".shp", ".gpkg", ".geojson", "other"), title = "choose file ending:")]
+  if(file_in %in% "other"){
+    file_in <- base::readline("enter file ending:")
+    while(is.character(suppressWarnings(base::as.numeric(file_in)))){
+      print("wrong format. Enter a character value")
+      file_in <- base::readline("enter file_in ")
+    }
+  }
+  return(file_in)
+}
