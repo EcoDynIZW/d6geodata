@@ -34,7 +34,7 @@ sapply(list("sf", "tidyverse", "raster", "terra", "here" , "d6geodata"),
 # create folder
 
 ```{r}
-data_name <- "" # name the data folder,  use "-" within arguments and "_" between arguments
+data_name <- d6geodata::data_name()
 
 path <- here("data-poc", data_name)
 
