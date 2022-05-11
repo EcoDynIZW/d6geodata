@@ -3,6 +3,7 @@
 export("%>%")
 export(build_meta_file)
 export(create_report)
+export(data_name)
 export(geo_overview)
 export(get_geodata)
 export(move_to_distill)
