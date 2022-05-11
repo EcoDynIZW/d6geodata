@@ -34,7 +34,9 @@ sapply(list("sf", "tidyverse", "raster", "terra", "here" , "d6geodata"),
 # create folder
 
 ```{r}
-path <- here("data-poc") # edit the path
+data_name <- "" # name the data folder,  use "-" within arguments and "_" between arguments
+
+path <- here("data-poc", data_name)
 
 dir.create(path = path)
 ```
@@ -69,8 +71,9 @@ d6geodata::build_meta_file(path = path)
 # create html file
 
 ```{r}
-d6geodata::render_geodata(path = path)
+d6geodata::create_report(path_name = data_name, out_path = path)
 ```
+
 
 ***
 
