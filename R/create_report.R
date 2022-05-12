@@ -33,7 +33,7 @@ sapply(list('tidyverse', 'here', 'ggplot2', 'raster', 'terra', 'cowplot'),
         "
 
 ```{r, include = FALSE}
-path <- ",paste0('"', paste(out_path, path_name, sep = "/"), '"'),"
+path <- ",paste0('"', paste(out_path, sep = "/"), '"'),"
 
 meta_raw <- utils::read.csv2(list.files(path, pattern = '.csv$', recursive = TRUE, full.names = TRUE))
 
