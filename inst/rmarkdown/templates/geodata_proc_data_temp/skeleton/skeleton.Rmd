@@ -36,7 +36,7 @@ sapply(list("sf", "tidyverse", "raster", "terra", "here" , "d6geodata"),
 ```{r}
 data_name <- d6geodata::data_name()
 
-path <- here("data-poc", data_name)
+path <- here("data-proc", data_name)
 
 dir.create(path = path)
 ```
