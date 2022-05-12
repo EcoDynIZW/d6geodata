@@ -56,7 +56,7 @@ grid::rasterGrob(meta_tab %>% flextable::as_raster()), xmin=-Inf, xmax=Inf, ymin
 
 title <- ggdraw() +
   draw_label(
-    meta$folder_name,
+    meta_raw$folder_name,
     fontface = 'bold',
     x = 0,
     hjust = 0
