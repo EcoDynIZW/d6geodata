@@ -4,7 +4,7 @@
 \alias{build_meta_file}
 \title{create meta data for new files}
 \usage{
-build_meta_file(path = ".")
+build_meta_file(path = ".", folder_name)
 }
 \arguments{
 \item{path}{The path where the data has to be stored}
