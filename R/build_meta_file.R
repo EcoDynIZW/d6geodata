@@ -32,9 +32,8 @@ build_meta_file <- function(path = ".", data_name = ""){
     data <- data %>%
       dplyr::mutate(
         folder_name = data_name,
-        name = stringi::stri_replace_last_fixed(data$folder_name, "_", "."),
+        name = stringi::stri_replace_last_fixed(data_name, "_", "."),
         epsg = ifelse(is.na(data$epsg), fun_epsg(), data$epsg),
-        crs = suppressWarnings(sf::st_crs(data$epsg)$proj4string),
         year_of_data = ifelse(is.na(data$year_of_data), fun_num("year of data"), data$year_of_data),
         units_of_data = ifelse(is.na(data$units_of_data), base::readline("units of data:"), data$units_of_data),
         resolution = ifelse(is.na(data$resolution), base::readline("resolution:"), data$resolution),
@@ -42,11 +41,12 @@ build_meta_file <- function(path = ".", data_name = ""){
         type_of_file = ifelse(is.na(data$type_of_file), fun_file(), data$type_of_file),
         source = ifelse(is.na(data$source), base::readline("source of data:"), data$source),
         link_of_source = ifelse(is.na(data$link_of_source), base::readline("link to source:"), data$link_of_source),
-        date_of_download = Sys.Date(),
+        date_of_compile = as.character(Sys.Date()),
         short_description = ifelse(is.na(data$short_description), base::readline("short description:"), data$short_description),
         modified = ifelse(is.na(data$modified), base::readline("modified?:"), data$modified)
       ) %>%
-      dplyr::mutate_each(dplyr::funs(empty_as_na))
+      dplyr::mutate_each(dplyr::funs(empty_as_na)) %>%
+      dplyr::mutate(crs = suppressWarnings(sf::st_crs(as.numeric(epsg))$proj4string))
 
     doit <- c("Yes", "No")[utils::menu(c("Yes", "No"), title = "Do you want to change something?")]
   }
