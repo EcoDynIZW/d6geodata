@@ -8,7 +8,7 @@
 #' }
 
 
-build_meta_file <- function(path = "."){
+build_meta_file <- function(path = ".", folder_name){
 
   data <- dplyr::tibble(folder_name = NA,
                         name = NA,
@@ -31,10 +31,10 @@ build_meta_file <- function(path = "."){
 
     data <- data %>%
       dplyr::mutate(
-        folder_name = ifelse(is.na(data$folder_name), base::readline("folder name:"), data$folder_name),
-        name = ifelse(is.na(data$name), base::readline("name of data:"), data$name),
-        crs = ifelse(is.na(data$crs), base::readline("projection name:"), data$crs),
+        folder_name = folder_name,
+        name = stringi::stri_replace_last_fixed(data$folder_name, "_", "."),
         epsg = ifelse(is.na(data$epsg), fun_epsg(), data$epsg),
+        crs = suppressWarnings(sf::st_crs(data$epsg)$proj4string),
         year_of_data = ifelse(is.na(data$year_of_data), fun_num("year of data"), data$year_of_data),
         units_of_data = ifelse(is.na(data$units_of_data), base::readline("units of data:"), data$units_of_data),
         resolution = ifelse(is.na(data$resolution), base::readline("resolution:"), data$resolution),
