@@ -33,7 +33,7 @@ sapply(list("sf", "tidyverse", "raster", "terra", "here" , "d6geodata"),
 
 # create folder
 
-```{r}
+```{r path}
 data_name <- d6geodata::data_name()
 
 path <- here("data-proc", data_name)
@@ -58,19 +58,19 @@ dir.create(path = path)
 
 # processing
 
-```{r}
+```{r processing}
 
 ```
 
 # create meta data file
 
-```{r}
+```{r metadata}
 d6geodata::build_meta_file(path = path)
 ```
 
 # create html file
 
-```{r}
+```{r report}
 d6geodata::create_report(path_name = data_name, out_path = path)
 ```
 
