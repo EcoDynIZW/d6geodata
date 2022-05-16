@@ -22,70 +22,85 @@ output:
 
 ",
         "```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE,
-dev = 'ragg_png', fig.width = 9, fig.height = 6, dpi = 600, retina = 1)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE,
+dev = 'ragg_png', fig.width = 9, fig.height = 6, dpi = 250, retina = 1)
+
 Sys.setlocale('LC_TIME', 'C')
-```\n\n",
-        "```{r packages, echo = FALSE, warning=FALSE, message=FALSE, include = FALSE}
-sapply(list('tidyverse', 'here', 'ggplot2', 'raster', 'terra', 'cowplot'),
-       library, character.only = TRUE, logical.return = TRUE)
+
+#sapply(list('tidyverse', 'ggplot2', 'raster', 'terra'),
+#       library, character.only = TRUE, logical.return = TRUE)
+library(patchwork)
+
+`%>%` <- magrittr::`%>%`
+
+ggplot2::theme_set(ggplot2::theme_void())
+ggplot2::theme_update(
+  legend.position = 'top',
+  legend.key.width = ggplot2::unit(3.5, 'lines'),
+  legend.key.height = ggplot2::unit(.5, 'lines'),
+  plot.margin = ggplot2::margin(rep(10, 4)),
+  plot.title = ggplot2::element_text(hjust = .5, face = 'bold')
+)
 ```",
         "
 
-```{r, include = FALSE}
-path <- ",paste0('"', paste(out_path, sep = "/"), '"'),"
+```{r data-impor}
+path <- paste(stringi::stri_c((unlist(stringi::stri_split(here::here(), regex = '/'))[1:3]), collapse = '/')", out_path, ", sep = '/')
 
-meta_raw <- utils::read.csv2(list.files(path, pattern = '.csv$', recursive = TRUE, full.names = TRUE))
+meta_raw <-
+      utils::read.csv2(list.files(path, pattern = '.csv$', recursive = TRUE, full.names = TRUE)) %>%
+  dplyr::mutate(dplyr::across(dplyr::everything(), as.character))
 
-meta_tab <- meta_raw %>%
-  dplyr::mutate(dplyr::across(dplyr::everything(), as.character)) %>%
-      tidyr::pivot_longer(cols = dplyr::everything(),
-                          names_to = 'column', values_to = 'input') %>%
-  flextable::flextable() %>% flextable::autofit()
-
-tif <- raster::raster(list.files(path, pattern = '.tif$', recursive = TRUE, full.names = TRUE))
+tif <-
+  terra::rast(list.files(path, pattern = '.tif$', recursive = TRUE, full.names = TRUE))
 
 
 ```\n\n",
-        "```{r, layout='l-body-outset', echo = FALSE, warning=FALSE, message=FALSE}
+        "```{r data-table}
 
-text_plot <- ggplot2::ggplot() +
-  ggplot2::theme_void() +
-  ggplot2::annotation_custom(
-grid::rasterGrob(meta_tab %>% flextable::as_raster()), xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf)
+meta_tbl <-
+  meta %>%
+  tidyr::pivot_longer(
+    cols = dplyr::everything(),
+    names_to = 'column',
+    values_to = 'input'
+  ) %>%
+  flextable::flextable() %>%
+  flextable::autofit()
 
-title <- ggdraw() +
-  draw_label(
-    meta_raw$folder_name,
-    fontface = 'bold',
-    x = 0,
-    hjust = 0
-  ) +
-  theme(
-    plot.margin = margin(0, 0, -180, 7)
-  )
+```\n\n",
+      "```{r map}
 
-tif_plot <- ggplot2::ggplot() +
+p_base_map <-
+  ggplot2::ggplot() +
   stars::geom_stars(data = stars::st_as_stars(tif)) +
-    scale_fill_continuous(low=grey(0), # here you can set another color palette
-                          high=grey(1),
-                          guide='colorbar',
-                          na.value='transparent',
-                          name = '') +
-  ggplot2::theme_void()
+  ggplot2::coord_sf(expand = FALSE)
 
+if(meta$data_type == 'binary_categorical') {
+  p_map <- d6geodata::plot_binary_map(tif = tif, p_base_map = p_base_map)
+  }
 
-plot_grid(
-  title, cowplot::plot_grid(tif_plot, text_plot,
-                   nrow = 1, ncol = 2,
-                   rel_heights = c(0.8, 1) ),
-  ncol = 1,
-  # rel_heights values control vertical title margins
-  rel_heights = c(0.1, 1)
-)
+if(meta$data_type %in% c('continual_numeric', 'discrete_numeric')) {
+  p_map <- d6geodata::plot_quantitative_map(tif = tif, p_base_map = p_base_map)
+}
+
+if(meta$data_type %in% c('unordered_categorical', 'ordered_categorical')) {
+  p_map <- d6geodata::plot_qualitative_map(tif = tif, p_base_map = p_base_map)
+}
 
 ```\n\n",
-      "***
+      "```{r table}
+p_table <-
+  ggplot2::ggplot() +
+  ggplot2::annotation_custom(
+    grob = grid::rasterGrob(meta_tbl %>% flextable::as_raster()),
+    xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf
+  )
+```\n\n",
+"```{r plot, layout='l-screen'}
+p_map + p_table + plot_annotation(title = meta$folder_name)
+```
+
 
 <details><summary>Session Info</summary>
 
@@ -101,5 +116,6 @@ sessionInfo()
 </details>"
       , sep = "\n")
 writeLines(file,
-           paste0("C:/Users/wenzler/Documents/GitHub/d6geodatabase/",path_name, ".rmd"))
+           paste0(stringi::stri_c((unlist(stringi::stri_split(here::here(), regex = "/"))[1:3]), collapse = "/"),
+                  "/Documents/GitHub/d6geodatabase/",path_name, ".rmd"))
     }
