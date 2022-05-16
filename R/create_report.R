@@ -10,8 +10,8 @@
 
 create_report <-
   function(path_name, out_path){
-      file <- paste(
-        "---
+    file <- paste0(
+      "---
 output:
     distill::distill_article:
         highlight: kate      ## styling of code
@@ -20,8 +20,8 @@ output:
         toc_depth: 2         ## level to be displayed in the table of content
 ---
 
-",
-        "```{r setup, include=FALSE}
+\n\n",
+"```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE,
 dev = 'ragg_png', fig.width = 9, fig.height = 6, dpi = 250, retina = 1)
 
@@ -41,12 +41,12 @@ ggplot2::theme_update(
   plot.margin = ggplot2::margin(rep(10, 4)),
   plot.title = ggplot2::element_text(hjust = .5, face = 'bold')
 )
-```",
-        "
+```\n\n",
+    "
 
 ```{r data-impor}
 path <- paste(stringi::stri_c((unlist(stringi::stri_split(here::here(), regex = '/'))[1:3]), collapse = '/'),'",
-      paste0(stringi::stri_c((unlist(stringi::stri_split(out_path, regex = "/"))[-(1:3)]), collapse = "/")), "', sep = '/')
+    paste0(stringi::stri_c((unlist(stringi::stri_split(out_path, regex = "/"))[-(1:3)]), collapse = "/")), "', sep = '/')
 
 meta_raw <-
       utils::read.csv2(list.files(path, pattern = '.csv$', recursive = TRUE, full.names = TRUE)) %>%
@@ -57,7 +57,7 @@ tif <-
 
 
 ```\n\n",
-        "```{r data-table}
+    "```{r data-table}
 
 meta_tbl <-
   meta %>%
@@ -70,7 +70,7 @@ meta_tbl <-
   flextable::autofit()
 
 ```\n\n",
-      "```{r map}
+    "```{r map}
 
 p_base_map <-
   ggplot2::ggplot() +
@@ -90,7 +90,7 @@ if(meta$data_type %in% c('unordered_categorical', 'ordered_categorical')) {
 }
 
 ```\n\n",
-      "```{r table}
+"```{r table}
 p_table <-
   ggplot2::ggplot() +
   ggplot2::annotation_custom(
@@ -114,9 +114,8 @@ Sys.time()
 sessionInfo()
 ```
 
-</details>"
-      , sep = "\n")
+</details>")
 writeLines(file,
            paste0(stringi::stri_c((unlist(stringi::stri_split(here::here(), regex = "/"))[1:3]), collapse = "/"),
                   "/Documents/GitHub/d6geodatabase/",path_name, ".rmd"))
-    }
+  }
