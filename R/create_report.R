@@ -48,7 +48,7 @@ ggplot2::theme_update(
 path <- paste(stringi::stri_c((unlist(stringi::stri_split(here::here(), regex = '/'))[1:3]), collapse = '/'),'",
     paste0(stringi::stri_c((unlist(stringi::stri_split(out_path, regex = "/"))[-(1:3)]), collapse = "/")), "', sep = '/')
 
-meta_raw <-
+meta <-
       utils::read.csv2(list.files(path, pattern = '.csv$', recursive = TRUE, full.names = TRUE)) %>%
   dplyr::mutate(dplyr::across(dplyr::everything(), as.character))
 
