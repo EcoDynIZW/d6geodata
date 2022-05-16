@@ -65,7 +65,7 @@ dir.create(path = path)
 # create meta data file
 
 ```{r metadata}
-d6geodata::build_meta_file(path = path)
+d6geodata::build_meta_file(path = path, data_name = data_name)
 ```
 
 # create html file
