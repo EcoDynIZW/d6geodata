@@ -49,7 +49,7 @@ path <- paste(stringi::stri_c((unlist(stringi::stri_split(here::here(), regex = 
     paste0(stringi::stri_c((unlist(stringi::stri_split(out_path, regex = "/"))[-(1:3)]), collapse = "/")), "', sep = '/')
 
 meta <-
-      utils::read.csv2(list.files(path, pattern = '.csv$', recursive = TRUE, full.names = TRUE)) %>%
+      utils::read.csv(list.files(path, pattern = '.csv$', recursive = TRUE, full.names = TRUE)) %>%
   dplyr::mutate(dplyr::across(dplyr::everything(), as.character))
 
 tif <-
@@ -77,15 +77,15 @@ p_base_map <-
   stars::geom_stars(data = stars::st_as_stars(tif)) +
   ggplot2::coord_sf(expand = FALSE)
 
-if(meta$data_type == 'binary_categorical') {
+if(meta$type_of_data == 'binary_categorical') {
   p_map <- d6geodata::plot_binary_map(tif = tif, p_base_map = p_base_map)
   }
 
-if(meta$data_type %in% c('continual_numeric', 'discrete_numeric')) {
+if(meta$type_of_data %in% c('continual_numeric', 'discrete_numeric')) {
   p_map <- d6geodata::plot_quantitative_map(tif = tif, p_base_map = p_base_map)
 }
 
-if(meta$data_type %in% c('unordered_categorical', 'ordered_categorical')) {
+if(meta$type_of_data %in% c('unordered_categorical', 'ordered_categorical')) {
   p_map <- d6geodata::plot_qualitative_map(tif = tif, p_base_map = p_base_map)
 }
 
