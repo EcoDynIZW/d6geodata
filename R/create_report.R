@@ -46,7 +46,9 @@ ggplot2::theme_update(
 
 ```{r data-impor}
 path <- ",
-    paste(get_dropbox_path(),paste0(stringi::stri_c((unlist(stringi::stri_split(out_path, regex = "/"))[-(1:4)]), collapse = "/")), "', sep = '/')
+    paste(get_dropbox_path(), paste0(stringi::stri_c((
+      unlist(stringi::stri_split(out_path, regex = "/"))[-(1:4)]
+    ), collapse = "/")), sep = '/'), "
 
 meta <-
       utils::read.csv(list.files(path, pattern = '.csv$', recursive = TRUE, full.names = TRUE)) %>%
