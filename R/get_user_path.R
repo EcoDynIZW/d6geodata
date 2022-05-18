@@ -1,5 +1,5 @@
 #' get the path of the user
-#' @return the path to the dropbox
+#' @return the path of the user
 #' @export
 #' @examples
 #' \dontrun{
