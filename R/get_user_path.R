@@ -13,7 +13,7 @@ get_user_path <- function(){
       stringi::stri_split(here::here(), regex = '/')
     )[1:3]), collapse = '/')
   } else{
-    gsub("C:/", "D:/",stringi::stri_c((unlist(
+    gsub("D:/", "C:/",stringi::stri_c((unlist(
       stringi::stri_split(here::here(), regex = '/')
     )[1:3]), collapse = '/'))
   }
