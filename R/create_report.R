@@ -118,6 +118,6 @@ sessionInfo()
 
 </details>")
 writeLines(file,
-           paste0(stringi::stri_c((unlist(stringi::stri_split(here::here(), regex = "/"))[1:3]), collapse = "/"),
+           paste0(d6geodata::get_user_path(),
                   "/Documents/GitHub/d6geodatabase/",path_name, ".rmd"))
   }
