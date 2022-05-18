@@ -7,7 +7,7 @@
 #' }
 
 get_user_path <- function(){
-  if(dir.exists("PopDynIZW Dropbox")){
+  if(!dir.exists("PopDynIZW Dropbox")){
     stringi::stri_c((unlist(
       stringi::stri_split(here::here(), regex = '/')
     )[1:3]), collapse = '/')
