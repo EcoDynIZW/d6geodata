@@ -3,10 +3,10 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' get_dropbox_path()
+#' get_user_path()
 #' }
 
-get_dropbox_path <- function(){
+get_user_path <- function(){
   if(dir.exists("PopDynIZW Dropbox")){
     stringi::stri_c((unlist(
       stringi::stri_split(here::here(), regex = '/')
