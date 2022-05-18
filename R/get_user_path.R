@@ -1,4 +1,4 @@
-#' get the path to our dropbox
+#' get the path of the user
 #' @return the path to the dropbox
 #' @export
 #' @examples
@@ -8,13 +8,13 @@
 
 get_dropbox_path <- function(){
   if(dir.exists("PopDynIZW Dropbox")){
-    paste(stringi::stri_c((unlist(
+    stringi::stri_c((unlist(
       stringi::stri_split(here::here(), regex = '/')
-    )[1:3]), collapse = '/'), 'PopDynIZW Dropbox', sep = "/")
+    )[1:3]), collapse = '/')
   } else{
-    paste(gsub("C:/", "D:/",stringi::stri_c((unlist(
+    gsub("C:/", "D:/",stringi::stri_c((unlist(
       stringi::stri_split(here::here(), regex = '/')
-    )[1:3]), collapse = '/')), 'PopDynIZW Dropbox', sep = "/")
+    )[1:3]), collapse = '/'))
   }
 }
 
