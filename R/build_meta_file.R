@@ -39,14 +39,14 @@ build_meta_file <- function(path = ".", data_name = ""){
         resolution = ifelse(is.na(data$resolution), base::readline("resolution:"), data$resolution),
         type_of_data = ifelse(is.na(data$type_of_data), fun_type(), data$type_of_data),
         type_of_file = ifelse(is.na(data$type_of_file), fun_file(), data$type_of_file),
-        source = ifelse(is.na(data$source), base::readline("source of data:"), data$source),
-        link_of_source = ifelse(is.na(data$link_of_source), base::readline("link to source:"), data$link_of_source),
+        source = ifelse(is.na(data$source),fun_source(), data$source),
         date_of_compile = as.character(Sys.Date()),
         short_description = ifelse(is.na(data$short_description), base::readline("short description:"), data$short_description),
         modified = ifelse(is.na(data$modified), base::readline("modified?:"), data$modified)
       ) %>%
       dplyr::mutate_each(dplyr::funs(empty_as_na)) %>%
-      dplyr::mutate(crs = suppressWarnings(sf::st_crs(as.numeric(epsg))$proj4string))
+      dplyr::mutate(crs = suppressWarnings(sf::st_crs(as.numeric(epsg))$proj4string),
+                    link_of_source = ifelse(is.na(data$link_of_source), fun_source_link(x = data$source), data$link_of_source))
 
     doit <- c("Yes", "No")[utils::menu(c("Yes", "No"), title = "Do you want to change something?")]
   }
@@ -152,10 +152,38 @@ fun_file <- function(){
   file_in <- c(".asc", ".tif", ".shp", ".gpkg", ".geojson", "other")[utils::menu(c(".asc", ".tif", ".shp", ".gpkg", ".geojson", "other"), title = "choose file ending:")]
   if(file_in %in% "other"){
     file_in <- base::readline("enter file ending:")
-    while(is.character(suppressWarnings(base::as.numeric(file_in)))){
-      print("wrong format. Enter a character value")
-      file_in <- base::readline("enter file_in ")
-    }
   }
   return(file_in)
 }
+
+
+# function for source
+fun_source <- function(){
+  file_in <- c("bkg", "fisbroker", "copernicus", "usgs", "other")[utils::menu(c("bkg", "fisbroker", "copernicus", "usgs", "other"), title = "choose source:")]
+  if(file_in %in% "other"){
+    file_in <- base::readline("enter source:")
+  }
+  return(file_in)
+}
+
+# function for source link
+fun_source_link <- function(x) {
+  ifelse(x == "bkg",
+         "https://gdz.bkg.bund.de",
+         ifelse(
+           x == "fisbroker",
+           "https://stadtentwicklung.berlin.de/geoinformation/fis-broker/",
+           ifelse(
+             x == "copernicus",
+             "https://land.copernicus.eu/",
+             ifelse(
+               x == "usgs",
+               "https://www.usgs.gov/",
+               base::readline("enter source link:")
+             )
+           )
+         ))
+}
+
+
+
