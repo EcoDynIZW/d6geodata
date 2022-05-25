@@ -132,14 +132,14 @@ fun_type <- function(){
       "unordered_categorical",
       "ordered_categorical",
       "binary_categorical",
-      "continual_numeric",
+      "continuous_numeric",
       "discrete_numeric"
     )[utils::menu(
       c(
         "unordered_categorical",
         "ordered_categorical",
         "binary_categorical",
-        "continual_numeric",
+        "continuous_numeric",
         "discrete_numeric"
       ),
       title = "choose file type:"
