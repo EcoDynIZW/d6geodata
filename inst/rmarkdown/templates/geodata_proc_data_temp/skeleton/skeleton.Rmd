@@ -1,7 +1,6 @@
 ---
 title: "Your Project: Data Preparation" 
-description: |
-    The aim of this study is...
+
 author:
     - name: ""
       url: 
