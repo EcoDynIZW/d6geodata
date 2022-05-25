@@ -35,9 +35,9 @@ sapply(list("sf", "tidyverse", "raster", "terra", "here" , "d6geodata"),
 ```{r path}
 data_name <- d6geodata::data_name()
 
-path <- here("data-proc", data_name)
+path <- paste("data-proc", unlist(str_split(data_name, "_"))[2], data_name, sep = "/")
 
-dir.create(path = path)
+dir.create(path = here::here(path))
 ```
 
 # Data
@@ -58,19 +58,19 @@ dir.create(path = path)
 # processing
 
 ```{r processing}
-
+#terra::writeRaster(rast, here(path, stringi::stri_replace_last_fixed(data_name, "_", ".")), overwrite = TRUE)
 ```
 
 # create meta data file
 
-```{r metadata}
-d6geodata::build_meta_file(path = path, data_name = data_name)
+```{r meatadata}
+d6geodata::build_meta_file(path = here::here(path), data_name = data_name)
 ```
 
 # create html file
 
-```{r report}
-d6geodata::create_report(path_name = data_name, out_path = path)
+```{r html}
+d6geodata::create_report(path_name = data_name, out_path = here::here(path))
 ```
 
 
