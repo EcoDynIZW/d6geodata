@@ -1,5 +1,6 @@
 #' show overview of geodata
 #' @return a list with folder names
+#' @param folder do you want the main or sub folders
 #' @export
 #' @examples
 #' \dontrun{

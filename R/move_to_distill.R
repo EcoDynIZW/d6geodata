@@ -1,5 +1,6 @@
 #' function for copying the geodata template, adding the paths and rename it to the corresponding data
 #' @param path The path where the data lays
+#' @param to_path where to move. Fixed!
 #' @export
 #' @examples
 #' \dontrun{
