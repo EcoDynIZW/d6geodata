@@ -1,5 +1,6 @@
 #' create meta data for new files
 #' @param path The path where the data has to be stored
+#' @param data_name name of the data
 #' @return a tibble where you have to set the parameters by hand.
 #' @export
 #' @examples

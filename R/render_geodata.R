@@ -1,5 +1,6 @@
 #' function for rendering an markdown to get an html of available geodata
 #' @param path The path where the data has to be stored
+#' @param data_name the name of the data
 #' @return a tibble where you have to set the parameters by hand.
 #' @export
 #' @examples

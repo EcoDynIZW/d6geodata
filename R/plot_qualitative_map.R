@@ -1,5 +1,7 @@
 #' plot qualitative maps
 #' @return a plot
+#' @param tif the raster that should be plotted
+#' @param p_base_map base map
 #' @export
 #' @examples
 #' \dontrun{
