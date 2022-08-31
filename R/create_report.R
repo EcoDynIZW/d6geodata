@@ -46,9 +46,7 @@ ggplot2::theme_update(
 
 ```{r data-impor}
 path <-
-    paste(d6geodata::get_dropbox_path(), 'Geodata'','", paste0(stringi::stri_c((
-      unlist(stringi::stri_split(out_path, regex = "/"))[-(1:3)]
-    ), collapse = "/")), "', sep = '/')
+    paste(d6geodata::get_dropbox_path(),'", outpath, "', sep = '/')
 
 meta <-
       utils::read.csv(list.files(path, pattern = '.csv$', recursive = TRUE, full.names = TRUE)) %>%
