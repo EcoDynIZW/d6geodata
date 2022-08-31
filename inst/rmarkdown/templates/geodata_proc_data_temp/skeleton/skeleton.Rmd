@@ -35,7 +35,7 @@ sapply(list("sf", "tidyverse", "raster", "terra", "here" , "d6geodata"),
 ```{r path}
 data_name <- d6geodata::data_name()
 
-path <- paste("data-proc", unlist(str_split(data_name, "_"))[2], data_name, sep = "/")
+path <- here("data-proc", unlist(str_split(data_name, "_"))[2], data_name)
 
 dir.create(path = here::here(path))
 ```
@@ -70,7 +70,9 @@ d6geodata::build_meta_file(path = here::here(path), data_name = data_name)
 # create html file
 
 ```{r html}
-d6geodata::create_report(path_name = data_name, out_path = here::here(path))
+d6geodata::create_report(path_name = data_name, out_path = paste0(stringi::stri_c((
+      unlist(stringi::stri_split(path, regex = "/"))[-c(1:which(unlist(stringi::stri_split(path, regex = "/")) %in% "GeoData")-1)]
+    ), collapse = "/")))
 ```
 
 
