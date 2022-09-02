@@ -23,11 +23,9 @@ get_dropbox_path <- function(){
       paste(stringi::stri_c((unlist(
         stringi::stri_split(here::here(), regex = '/')
       )[1:which(unlist(stringi::stri_split(here::here(), regex = '/')) == "PopDynIZW Dropbox")]),
-      collapse = '/'), sep = "/")
-
-    }
-      }
+      collapse = '/'), sep = "/") }
     else{"E:/PopDynIZW Dropbox/PopDynIZW Dropbox"}
+      }
   }
 }
 
