@@ -35,7 +35,7 @@ library(patchwork)
 
 ggplot2::theme_set(ggplot2::theme_void())
 ggplot2::theme_update(
-  legend.position = 'top',
+  legend.position = 'bottom',
   legend.key.width = ggplot2::unit(3.5, 'lines'),
   legend.key.height = ggplot2::unit(.5, 'lines'),
   plot.margin = ggplot2::margin(rep(10, 4)),
