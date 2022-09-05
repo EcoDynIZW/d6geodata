@@ -55,6 +55,15 @@ meta <-
 tif <-
   terra::rast(list.files(path, pattern = '.tif$', recursive = TRUE, full.names = TRUE))
 
+if(raster::ncell(tif)>= 1e+6){
+  tif <- tif %>%
+  terra::aggregate(fact = 10,
+                   fun = base::ifelse(meta$type_of_data %in% c('binary_categorical',
+                                                       'unordered_categorical',
+                                                       'ordered_categorical'),
+                                'max',
+                                'mean'))
+}
 
 ```\n\n",
     "```{r data-table}
