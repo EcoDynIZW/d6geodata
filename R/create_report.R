@@ -18,6 +18,7 @@ output:
         code_folding: false  ## if 'true' you can expand and shrink code chunks
         toc: true            ## if 'true' adds a table of content
         toc_depth: 2         ## level to be displayed in the table of content
+        keep_md: TRUE
 ---
 
 \n\n",
