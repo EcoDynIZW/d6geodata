@@ -47,7 +47,7 @@ ggplot2::theme_update(
 
 ```{r data-impor}
 path <-
-    paste(d6geodata::get_dropbox_path(),'", out_path, "', sep = '/')
+    paste(dir(path = c('C:/', 'D:/', 'E:/'), pattern = 'PopDynIZW Dropbox$', recursive = T, include.dirs = T, full.names = T)[1],'", out_path, "', sep = '/')
 
 meta <-
       utils::read.csv(list.files(path, pattern = '.csv$', recursive = TRUE, full.names = TRUE)) %>%
