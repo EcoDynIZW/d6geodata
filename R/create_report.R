@@ -46,6 +46,8 @@ ggplot2::theme_update(
     "
 
 ```{r data-impor}
+
+# get path
 path <-
     paste(dir(path = c('C:/', 'D:/', 'E:/'), pattern = 'PopDynIZW Dropbox$', recursive = T, include.dirs = T, full.names = T)[1],'", out_path, "', sep = '/')
 
