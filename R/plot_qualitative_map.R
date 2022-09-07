@@ -12,7 +12,11 @@ plot_qualitative_map <- function(tif, p_base_map){
   p_base_map +
     rcartocolor::scale_fill_carto_c(
       palette = "Bold",
-      breaks = as.vector(terra::minmax(tif))[1]:as.vector(terra::minmax(tif))[2],
+      breaks = (table(raster::values(tif)) %>%
+                  data.frame() %>%
+                  dplyr::arrange(Freq) %>%
+                  tail(5) %>%
+                  dplyr::mutate(Var1 = as.numeric(as.character(Var1))))$Var1,
       name = NULL
     ) +
     ggplot2::guides(fill = ggplot2::guide_legend(label.position = "bottom"))
