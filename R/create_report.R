@@ -12,7 +12,7 @@ create_report <-
   function(path_name, out_path){
     file <- paste0(
 "---
-title: ",unlist(stringi::stri_split(path_name, regex = "_"))[1-3],"
+title: '",unlist(stringi::stri_split(path_name, regex = '_'))[1:3],"'
 output:
     distill::distill_article:
         highlight: kate      ## styling of code
@@ -69,9 +69,9 @@ meta_gt <- gt::gt(meta %>%
 ```\n\n",
     "```{r map}
 p_map <-
- readRDS(",paste(path, paste0(unlist(
+ readRDS('",paste(path, paste0(unlist(
 stringi::stri_split(path, regex = '/')
-)[length(unlist(stringi::stri_split(path, regex = '/')))], '.rds'), sep = '/'),")
+)[length(unlist(stringi::stri_split(path, regex = '/')))], '.rds'), sep = '/'),"')
 
 ```\n\n",
 
