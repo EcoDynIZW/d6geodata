@@ -53,18 +53,51 @@ dir.create(path = here::here(path))
    st_transform(3035)
  )
 
+berlin_3035_sf <-
+  st_read(
+    here(
+      "data-raw",
+      "berlin",
+      "berlin_districts_2020_3035",
+      "berlin_districts_2020_3035.gpkg"
+    )
+  )
+
 ```
 
 # processing
 
 ```{r processing}
-#terra::writeRaster(rast, here(path, stringi::stri_replace_last_fixed(data_name, "_", ".")), overwrite = TRUE)
+tif <- 
+
+writeRaster(tif, here(path, stringi::stri_replace_last_fixed(data_name, "_", ".")), overwrite = TRUE)
 ```
 
 # create meta data file
 
 ```{r meatadata}
-d6geodata::build_meta_file(path = here::here(path), data_name = data_name)
+meta <- d6geodata::build_meta_file(path = here::here(path), data_name = data_name)
+```
+
+# plot file
+
+```{r}
+p_base_map <-
+  ggplot2::ggplot() +
+  stars::geom_stars(data = stars::st_as_stars(tif)) +
+  ggplot2::coord_sf(expand = FALSE)
+
+if(meta$type_of_data == 'binary_categorical') {
+  p_map <- d6geodata::plot_binary_map(tif = tif, p_base_map = p_base_map)
+  }
+if(meta$type_of_data %in% c('continual_numeric', 'discrete_numeric')) {
+  p_map <- d6geodata::plot_quantitative_map(tif = tif, p_base_map = p_base_map)
+}
+if(meta$type_of_data %in% c('unordered_categorical', 'ordered_categorical')) {
+  p_map <- d6geodata::plot_qualitative_map(tif = tif, p_base_map = p_base_map)
+}
+
+saveRDS(p_map, here(path, paste0(data_name, ".rds")))
 ```
 
 # create html file

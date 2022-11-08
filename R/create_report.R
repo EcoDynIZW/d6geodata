@@ -29,8 +29,6 @@ dev = 'ragg_png', fig.width = 9, fig.height = 6, dpi = 250, retina = 1)
 
 Sys.setlocale('LC_TIME', 'C')
 
-#sapply(list('tidyverse', 'ggplot2', 'raster', 'terra'),
-#       library, character.only = TRUE, logical.return = TRUE)
 library(patchwork)
 
 `%>%` <- magrittr::`%>%`
