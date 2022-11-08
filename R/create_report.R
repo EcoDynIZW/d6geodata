@@ -12,7 +12,7 @@ create_report <-
   function(path_name, out_path){
     file <- paste0(
 "---
-title: '",unlist(stringi::stri_split(path_name, regex = '_'))[1:3],"'
+title: '",paste0(stringi::stri_c(unlist(stringi::stri_split(path_name, regex = "_"))[1:3], collapse =  " ")),"'
 output:
     distill::distill_article:
         highlight: kate      ## styling of code
