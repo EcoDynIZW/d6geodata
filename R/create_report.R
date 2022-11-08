@@ -11,7 +11,8 @@
 create_report <-
   function(path_name, out_path){
     file <- paste0(
-      "---
+"---
+title: ",unlist(stringi::stri_split(path_name, regex = "_"))[1-3],"
 output:
     distill::distill_article:
         highlight: kate      ## styling of code
@@ -49,7 +50,7 @@ ggplot2::theme_update(
 
 # get path
 path <-
-    paste(dir(path = c('C:/', 'D:/', 'E:/'), pattern = 'PopDynIZW Dropbox$', recursive = T, include.dirs = T, full.names = T)[1],'", out_path, "', sep = '/')
+    paste(dir(path = c('C:/', 'E:/'), pattern = 'PopDynCloud$', recursive = T, include.dirs = T, full.names = T)[1],'", out_path, "', sep = '/')
 
 meta <-
       utils::read.csv(list.files(path, pattern = '.csv$', recursive = TRUE, full.names = TRUE)) %>%
@@ -57,61 +58,26 @@ meta <-
 
 tif <-
   terra::rast(list.files(path, pattern = '.tif$', recursive = TRUE, full.names = TRUE))
-
-if(raster::ncell(tif)>= 1e+6){
-  tif <- tif %>%
-  terra::aggregate(fact = 10,
-                   fun = base::ifelse(meta$type_of_data %in% c('binary_categorical',
-                                                       'unordered_categorical',
-                                                       'ordered_categorical'),
-                                'max',
-                                'mean'))
-}
-
 ```\n\n",
     "```{r data-table}
-
-meta_tbl <-
-  meta %>%
+meta_gt <- gt::gt(meta %>%
   tidyr::pivot_longer(
     cols = dplyr::everything(),
     names_to = 'column',
     values_to = 'input'
-  ) %>%
-  flextable::flextable() %>%
-  flextable::autofit()
-
+  ))
 ```\n\n",
     "```{r map}
-
-p_base_map <-
-  ggplot2::ggplot() +
-  stars::geom_stars(data = stars::st_as_stars(tif)) +
-  ggplot2::coord_sf(expand = FALSE)
-
-if(meta$type_of_data == 'binary_categorical') {
-  p_map <- d6geodata::plot_binary_map(tif = tif, p_base_map = p_base_map)
-  }
-
-if(meta$type_of_data %in% c('continual_numeric', 'discrete_numeric')) {
-  p_map <- d6geodata::plot_quantitative_map(tif = tif, p_base_map = p_base_map)
-}
-
-if(meta$type_of_data %in% c('unordered_categorical', 'ordered_categorical')) {
-  p_map <- d6geodata::plot_qualitative_map(tif = tif, p_base_map = p_base_map)
-}
+p_map <-
+ readRDS(",paste(path, paste0(unlist(
+stringi::stri_split(path, regex = '/')
+)[length(unlist(stringi::stri_split(path, regex = '/')))], '.rds'), sep = '/'),")
 
 ```\n\n",
-"```{r table}
-p_table <-
-  ggplot2::ggplot() +
-  ggplot2::annotation_custom(
-    grob = grid::rasterGrob(meta_tbl %>% flextable::as_raster()),
-    xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf
-  )
-```\n\n",
+
 "```{r plot, layout='l-screen'}
-p_map + p_table + plot_annotation(title = meta$folder_name)
+p_map
+meta_gt
 ```
 
 
