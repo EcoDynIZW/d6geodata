@@ -14,7 +14,8 @@ plot_binary_map <- function(tif, p_base_map){
       low = "#f1effc",
       high = "#221462",
       breaks = as.vector(terra::minmax(tif)),
-      name = NULL
+      name = NULL,
+      na.value = "grey90"
     ) +
     ggplot2::guides(fill = ggplot2::guide_legend(label.position = "bottom"))
 }
