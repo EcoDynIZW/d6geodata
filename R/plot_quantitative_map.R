@@ -14,5 +14,5 @@ plot_quantitative_map <- function(tif, p_base_map){
       palette = "Emrld",
       name = NULL
     ) +
-    ggplot2::guides(fill = ggplot2::guide_colorbar(label.position = "bottom"))
+    ggplot2::guides(fill = ggplot2::guide_legend(label.position = "bottom"))
 }
