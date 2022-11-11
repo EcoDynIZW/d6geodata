@@ -48,7 +48,7 @@ ggplot2::theme_update(
 
 # get path
 path <-
-    paste0(ifelse(dir.exists('E:/PopDynCloud') == T, 'E:/PopDynCloud', 'C:/PopDynCloud'), ",outpath,")
+    paste0(ifelse(dir.exists('E:/PopDynCloud') == T, 'E:/PopDynCloud', 'C:/PopDynCloud'), ",out_path,")
 
 meta <-
       utils::read.csv(list.files(path, pattern = '.csv$', recursive = TRUE, full.names = TRUE)) %>%
