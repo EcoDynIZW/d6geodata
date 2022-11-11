@@ -67,7 +67,7 @@ meta_gt <- gt::gt(meta %>%
 ```\n\n",
     "```{r map}
 p_map <-
- readRDS(paste0(ifelse(dir.exists('E:/PopDynCloud') == T, 'E:/PopDynCloud', 'C:/PopDynCloud'), '",out_path,"' '.rds'))
+ readRDS(paste0(ifelse(dir.exists('E:/PopDynCloud') == T, 'E:/PopDynCloud', 'C:/PopDynCloud'), '/', '",out_path, '/', path_name ,"' '.rds'))
 
 ```\n\n",
 
