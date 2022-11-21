@@ -1,6 +1,7 @@
 #' function for creating a rmd file and copying it to the webpage folder
 #' @param path_name name of the folder
 #' @param out_path The path where the data lays
+#' @param cats add categories that will show up after render
 #' @export
 #' @examples
 #' \dontrun{
@@ -9,7 +10,7 @@
 
 
 create_report <-
-  function(path_name, out_path){
+  function(path_name, out_path, cats){
     file <- paste0(
 "---
 title: '",paste0(stringi::stri_c(unlist(stringi::stri_split(path_name, regex = "_"))[1:3], collapse =  " ")),"'
@@ -21,8 +22,7 @@ output:
         toc_depth: 2         ## level to be displayed in the table of content
         keep_md: TRUE
 categories:
-  '",paste(paste0("- ", 'Berlin'), paste0("- ", 'Germany'), sep = '\r\n'),"'
-
+",stringi::stri_c("  - ", cats, collapse = "\n"),"
 ---
 
 \n\n",
@@ -92,7 +92,12 @@ sessionInfo()
 ```
 
 </details>")
+if(!dir.exists(paste0(d6geodata::get_user_path(),
+                     "/Documents/GitHub/EcoDynIZW.github.io/_posts_geodata/", path_name)) == TRUE){
+  dir.create(paste0(d6geodata::get_user_path(),
+                    "/Documents/GitHub/EcoDynIZW.github.io/_posts_geodata/", path_name))
+}
 writeLines(file,
            paste0(d6geodata::get_user_path(),
-                  "/Documents/GitHub/d6geodatabase/",path_name, ".rmd"))
+                  "/Documents/GitHub/EcoDynIZW.github.io/_posts_geodata/", path_name, "/", path_name, ".rmd"))
   }

@@ -8,6 +8,9 @@ geo_overview(
   folder = c("main", "sub")[utils::menu(c("main", "sub"), title = "choose folder:")]
 )
 }
+\arguments{
+\item{folder}{do you want the main or sub folders}
+}
 \value{
 a list with folder names
 }

@@ -4,12 +4,14 @@
 \alias{create_report}
 \title{function for creating a rmd file and copying it to the webpage folder}
 \usage{
-create_report(path_name, out_path)
+create_report(path_name, out_path, cats)
 }
 \arguments{
 \item{path_name}{name of the folder}
 
 \item{out_path}{The path where the data lays}
+
+\item{cats}{add categories that will show up after render}
 }
 \description{
 function for creating a rmd file and copying it to the webpage folder

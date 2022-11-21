@@ -8,6 +8,8 @@ build_meta_file(path = ".", data_name = "")
 }
 \arguments{
 \item{path}{The path where the data has to be stored}
+
+\item{data_name}{name of the data}
 }
 \value{
 a tibble where you have to set the parameters by hand.

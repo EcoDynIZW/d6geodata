@@ -4,7 +4,12 @@
 \alias{get_geodata}
 \title{get the processed geoadata from droppbox}
 \usage{
-get_geodata(data_name, download_data)
+get_geodata(data_name, download_data = FALSE)
+}
+\arguments{
+\item{data_name}{the name of the data folder (e.g. copied from the website)}
+
+\item{download_data}{do you want to download the data? Choose "TRUE" or "FALSE"}
 }
 \value{
 the file in a folder named after the file

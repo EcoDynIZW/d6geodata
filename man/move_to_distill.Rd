@@ -11,6 +11,8 @@ move_to_distill(
 }
 \arguments{
 \item{path}{The path where the data lays}
+
+\item{to_path}{where to move. Fixed!}
 }
 \description{
 function for copying the geodata template, adding the paths and rename it to the corresponding data

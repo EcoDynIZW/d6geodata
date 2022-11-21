@@ -8,6 +8,8 @@ render_geodata_ras(path, folder_name)
 }
 \arguments{
 \item{path}{The path where the data has to be stored}
+
+\item{folder_name}{the name of the folder}
 }
 \value{
 a tibble where you have to set the parameters by hand.

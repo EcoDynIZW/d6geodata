@@ -6,6 +6,11 @@
 \usage{
 plot_binary_map(tif, p_base_map)
 }
+\arguments{
+\item{tif}{the raster that should be plotted}
+
+\item{p_base_map}{base map}
+}
 \value{
 a plot
 }
