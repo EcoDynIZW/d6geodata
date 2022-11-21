@@ -20,6 +20,9 @@ output:
         toc: true            ## if 'true' adds a table of content
         toc_depth: 2         ## level to be displayed in the table of content
         keep_md: TRUE
+categories:
+  '",paste(paste0("- ", 'Berlin'), paste0("- ", 'Germany'), sep = '\r\n'),"'
+
 ---
 
 \n\n",
