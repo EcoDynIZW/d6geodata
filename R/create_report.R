@@ -14,15 +14,18 @@ create_report <-
     file <- paste0(
 "---
 title: '",paste0(stringi::stri_c(unlist(stringi::stri_split(path_name, regex = "_"))[1:3], collapse =  " ")),"'
-output:
-    distill::distill_article:
-        highlight: kate      ## styling of code
-        code_folding: false  ## if 'true' you can expand and shrink code chunks
-        toc: true            ## if 'true' adds a table of content
-        toc_depth: 2         ## level to be displayed in the table of content
-        keep_md: TRUE
 categories:
 ",stringi::stri_c("  - ", cats, collapse = "\n"),"
+author:
+  - name: Moritz Wenzler-Meya
+
+    affiliation: IZW Berlin
+    affiliation_url: https://ecodynizw.github.io/EcoDynIZW
+date: '",Sys.Date(),"'
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
 ---
 
 \n\n",

@@ -107,7 +107,7 @@ saveRDS(p_map, here(path, paste0(data_name, ".rds")))
 ```{r html}
 d6geodata::create_report(path_name = data_name, out_path = paste0(stringi::stri_c((
       unlist(stringi::stri_split(path, regex = "/"))[-c(1:which(unlist(stringi::stri_split(path, regex = "/")) %in% "GeoData")-1)]
-    ), collapse = "/")))
+    ), collapse = "/")), cats = c())
 ```
 
 
