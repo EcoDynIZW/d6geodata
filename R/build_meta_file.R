@@ -23,6 +23,7 @@ build_meta_file <- function(path = ".", data_name = ""){
                         source = NA,
                         link_of_source = NA,
                         date_of_compile = NA,
+                        license = NA,
                         short_description = NA,
                         modified = NA)
 
@@ -35,19 +36,47 @@ build_meta_file <- function(path = ".", data_name = ""){
         folder_name = data_name,
         name = stringi::stri_replace_last_fixed(data_name, "_", "."),
         epsg = ifelse(is.na(data$epsg), fun_epsg(), data$epsg),
-        year_of_data = ifelse(is.na(data$year_of_data), fun_num("year of data"), data$year_of_data),
-        units_of_data = ifelse(is.na(data$units_of_data), base::readline("units of data:"), data$units_of_data),
-        resolution = ifelse(is.na(data$resolution), base::readline("resolution:"), data$resolution),
+        year_of_data = ifelse(
+          is.na(data$year_of_data),
+          fun_num("year of data"),
+          data$year_of_data
+        ),
+        units_of_data = ifelse(
+          is.na(data$units_of_data),
+          base::readline("units of data:"),
+          data$units_of_data
+        ),
+        resolution = ifelse(
+          is.na(data$resolution),
+          base::readline("resolution:"),
+          data$resolution
+        ),
         type_of_data = ifelse(is.na(data$type_of_data), fun_type(), data$type_of_data),
         type_of_file = ifelse(is.na(data$type_of_file), fun_file(), data$type_of_file),
-        source = ifelse(is.na(data$source),fun_source(), data$source),
+        source = ifelse(is.na(data$source), fun_source(), data$source),
         date_of_compile = as.character(Sys.Date()),
-        short_description = ifelse(is.na(data$short_description), base::readline("short description:"), data$short_description),
-        modified = ifelse(is.na(data$modified), base::readline("modified?:"), data$modified)
+        short_description = ifelse(
+          is.na(data$short_description),
+          base::readline("short description:"),
+          data$short_description
+        ),
+        modified = ifelse(
+          is.na(data$modified),
+          base::readline("modified?:"),
+          data$modified
+        )
       ) %>%
       dplyr::mutate_each(dplyr::funs(empty_as_na)) %>%
-      dplyr::mutate(crs = suppressWarnings(sf::st_crs(as.numeric(epsg))$proj4string),
-                    link_of_source = ifelse(is.na(data$link_of_source), fun_source_link(x = data$source), data$link_of_source))
+      dplyr::mutate(
+        crs = suppressWarnings(sf::st_crs(as.numeric(epsg))$proj4string),
+        link_of_source = ifelse(
+          is.na(link_of_source),
+          fun_source_link(x = source),
+          link_of_source
+        ),
+        license = as.character(d6geodata::get_license(source = source,
+                                                      year = lubridate::year(date_of_compile)))
+      )
 
     doit <- c("Yes", "No")[utils::menu(c("Yes", "No"), title = "Do you want to change something?")]
   }
@@ -186,5 +215,31 @@ fun_source_link <- function(x) {
          ))
 }
 
+#' function for getting license of the data
+#' @param source source name
+#' @param year year of downloaded data
+#' @return a character string with the respective license for citation
+#' @export
+#' @examples
+#' \dontrun{
+#' render_geodata()
+#' }
 
+get_license <- function(source, year = lubridate::year(Sys.Date())){
+  if(source %in% "bkg"){
+    return(paste0("© GeoBasis-DE / BKG (", year,")"))
+  }
+  if(source %in% "copernicus"){
+    return(paste0("© European Union, Copernicus Land Monitoring Service ", year, ", European Environment Agency (EEA)"))
+  }
+  if(source %in% "fisbroker"){
+    return(paste0("Amt für Statistik Berlin-Brandenburg ", year))
+  }
+  if(source %in% "usgs"){
+    return(pasteo("go on https://www.usgs.gov/centers/eros/data-citation and cite by specific product"))
+  }
+  if(source %in% "other"){
+    return(base::readline("enter license:"))
+  }
+}
 
