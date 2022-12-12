@@ -209,7 +209,11 @@ fun_source_link <- function(x) {
              ifelse(
                x == "usgs",
                "https://www.usgs.gov/",
+               ifelse(
+                 x == "osm",
+                 "https://download.geofabrik.de/",
                base::readline("enter source link:")
+               )
              )
            )
          ))
@@ -237,6 +241,9 @@ get_license <- function(source, year = lubridate::year(Sys.Date())){
   }
   if(source %in% "usgs"){
     return(pasteo("go on https://www.usgs.gov/centers/eros/data-citation and cite by specific product"))
+  }
+  if(source %in% "osm"){
+    return(pasteo("Data/Maps Copyright 2018 Geofabrik GmbH and OpenStreetMap Contributors"))
   }
   else{
     return(base::readline("enter license:"))
