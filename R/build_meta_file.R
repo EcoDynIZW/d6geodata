@@ -74,7 +74,7 @@ build_meta_file <- function(path = ".", data_name = ""){
           fun_source_link(x = source),
           link_of_source
         ),
-        license = as.character(d6geodata::get_license(source = source,
+        copyright = as.character(d6geodata::get_copyright(source = source,
                                                       year = lubridate::year(date_of_compile)))
       )
 
@@ -189,7 +189,7 @@ fun_file <- function(){
 
 # function for source
 fun_source <- function(){
-  file_in <- c("bkg", "fisbroker", "copernicus", "usgs", "other")[utils::menu(c("bkg", "fisbroker", "copernicus", "usgs", "other"), title = "choose source:")]
+  file_in <- c("bkg", "fisbroker", "copernicus", "usgs", "osm", "other")[utils::menu(c("bkg", "fisbroker", "copernicus", "usgs", "osm", "other"), title = "choose source:")]
   if(file_in %in% "other"){
     file_in <- base::readline("enter source:")
   }
@@ -219,7 +219,7 @@ fun_source_link <- function(x) {
          ))
 }
 
-#' function for getting license of the data
+#' function for getting copyright of the data
 #' @param source source name
 #' @param year year of downloaded data
 #' @return a character string with the respective license for citation
@@ -229,7 +229,7 @@ fun_source_link <- function(x) {
 #' render_geodata()
 #' }
 
-get_license <- function(source, year = lubridate::year(Sys.Date())){
+get_copyright <- function(source, year = lubridate::year(Sys.Date())){
   if(source %in% "bkg"){
     return(paste0("© GeoBasis-DE / BKG (", year,")"))
   }
