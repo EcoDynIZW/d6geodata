@@ -240,10 +240,10 @@ get_copyright <- function(source, year = lubridate::year(Sys.Date())){
     return(paste0("Amt für Statistik Berlin-Brandenburg ", year))
   }
   if(source %in% "usgs"){
-    return(pasteo("go on https://www.usgs.gov/centers/eros/data-citation and cite by specific product"))
+    return(paste0("go on https://www.usgs.gov/centers/eros/data-citation and cite by specific product"))
   }
   if(source %in% "osm"){
-    return(pasteo("Data/Maps Copyright 2018 Geofabrik GmbH and OpenStreetMap Contributors"))
+    return(paste0("Data/Maps Copyright 2018 Geofabrik GmbH and OpenStreetMap Contributors"))
   }
   else{
     return(base::readline("enter license:"))
