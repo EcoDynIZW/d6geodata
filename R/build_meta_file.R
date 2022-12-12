@@ -23,7 +23,7 @@ build_meta_file <- function(path = ".", data_name = ""){
                         source = NA,
                         link_of_source = NA,
                         date_of_compile = NA,
-                        license = NA,
+                        copyright = NA,
                         short_description = NA,
                         modified = NA)
 
