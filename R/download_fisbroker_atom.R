@@ -9,13 +9,13 @@
 #' }
 
 #### Function
-download_fisbroker_atom <- function(zip_link, name){
+download_fisbroker_atom <- function(zip_link, path ,name){
   temp <- tempfile()
   download.file(zip_link, temp, method = "auto", quiet = FALSE)
-  unzip(temp, exdir = here("data-raw", "geo-raw", name))
+  unzip(temp, exdir = here("data-raw", path, name))
 
   # you have to set the crs beacuse it is missing sometimes. The default epsg on fisbroker is 25833
-  ras <- raster(list.files(here("data-raw", "geo-raw", name),
+  ras <- raster(list.files(here("data-raw", path, name),
                                     pattern = ".tif$", full.names = TRUE)[1], crs = "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs")
   return(ras)
 }

@@ -1,7 +1,6 @@
 ---
 title: "Your Project: Data Preparation" 
-description: |
-    The aim of this study is...
+
 author:
     - name: ""
       url: 
@@ -27,16 +26,20 @@ knitr::opts_chunk$set(echo = TRUE, warning = TRUE, message = TRUE,
 # Setup
 
 ```{r packages}
+# devtools::install_github("EcoDynIZW/d6geodata")
+
 sapply(list("sf", "tidyverse", "raster", "terra", "here" , "d6geodata"), 
        library, character.only = TRUE, logical.return = TRUE)
 ```
 
 # create folder
 
-```{r}
-path <- here("data-raw") # edit the path
+```{r path}
+data_name <- d6geodata::data_name()
 
-dir.create(path = path)
+path <- here("data-proc", unlist(str_split(data_name, "_"))[2], data_name)
+
+dir.create(path = here::here(path))
 ```
 
 # Data
@@ -52,20 +55,60 @@ dir.create(path = path)
    st_transform(3035)
  )
 
+berlin_3035_sf <-
+  st_read(
+    here(
+      "data-raw",
+      "berlin",
+      "berlin_districts_2020_3035",
+      "berlin_districts_2020_3035.gpkg"
+    )
+  )
+
+```
+
+# processing
+
+```{r processing}
+tif <- 
+
+writeRaster(tif, here(path, stringi::stri_replace_last_fixed(data_name, "_", ".")), overwrite = TRUE)
 ```
 
 # create meta data file
 
+```{r meatadata}
+meta <- d6geodata::build_meta_file(path = here::here(path), data_name = data_name)
+```
+
+# plot file
+
 ```{r}
-d6geodata::build_meta_file(path = path)
+p_base_map <-
+  ggplot2::ggplot() +
+  stars::geom_stars(data = stars::st_as_stars(tif)) +
+  ggplot2::coord_sf(expand = FALSE)
+
+if(meta$type_of_data == 'binary_categorical') {
+  p_map <- d6geodata::plot_binary_map(tif = tif, p_base_map = p_base_map)
+  }
+if(meta$type_of_data %in% c('continual_numeric', 'discrete_numeric')) {
+  p_map <- d6geodata::plot_quantitative_map(tif = tif, p_base_map = p_base_map)
+}
+if(meta$type_of_data %in% c('unordered_categorical', 'ordered_categorical')) {
+  p_map <- d6geodata::plot_qualitative_map(tif = tif, p_base_map = p_base_map)
+}
+
+saveRDS(p_map, here(path, paste0(data_name, ".rds")))
 ```
 
 # create html file
 
-```{r}
-d6geodata::render_geodata(path = path)
+```{r html}
+d6geodata::create_report(path_name = data_name, out_path = paste0(stringi::stri_c((
+      unlist(stringi::stri_split(path, regex = "/"))[-c(1:which(unlist(stringi::stri_split(path, regex = "/")) %in% "GeoData")-1)]
+    ), collapse = "/")), cats = c())
 ```
-
 
 
 ***

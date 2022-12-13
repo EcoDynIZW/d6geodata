@@ -4,7 +4,7 @@
 \alias{download_fisbroker_atom}
 \title{Download data from fisbroker}
 \usage{
-download_fisbroker_atom(zip_link, name)
+download_fisbroker_atom(zip_link, path, name)
 }
 \arguments{
 \item{zip_link}{the atom url of the data from fisbroker.}
