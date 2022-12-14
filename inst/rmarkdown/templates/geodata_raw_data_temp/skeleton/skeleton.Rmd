@@ -92,7 +92,7 @@ p_base_map <-
 if(meta$type_of_data == 'binary_categorical') {
   p_map <- d6geodata::plot_binary_map(tif = tif, p_base_map = p_base_map)
   }
-if(meta$type_of_data %in% c('continual_numeric', 'discrete_numeric')) {
+if(meta$type_of_data %in% c('continuous_numeric', 'discrete_numeric')) {
   p_map <- d6geodata::plot_quantitative_map(tif = tif, p_base_map = p_base_map)
 }
 if(meta$type_of_data %in% c('unordered_categorical', 'ordered_categorical')) {
