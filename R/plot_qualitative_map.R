@@ -14,9 +14,9 @@ plot_qualitative_map <- function(tif, p_base_map){
       palette = "Bold",
       breaks = (table(raster::values(tif)) %>%
                   data.frame() %>%
-                  dplyr::arrange(Freq) %>%
-                  tail(5) %>%
-                  dplyr::mutate(Var1 = as.numeric(as.character(Var1))))$Var1,
+                  dplyr::arrange('Freq') %>%
+                  utils::tail(5) %>%
+                  dplyr::mutate(Var1 = as.numeric(as.character('Var1'))))$'Var1',
       name = NULL
     ) +
     ggplot2::guides(fill = ggplot2::guide_legend(label.position = "bottom"))

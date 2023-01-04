@@ -68,14 +68,14 @@ build_meta_file <- function(path = ".", data_name = ""){
       ) %>%
       dplyr::mutate_each(dplyr::funs(empty_as_na)) %>%
       dplyr::mutate(
-        crs = suppressWarnings(sf::st_crs(as.numeric(epsg))$proj4string),
+        crs = suppressWarnings(sf::st_crs(as.numeric('epsg'))$proj4string),
         link_of_source = ifelse(
-          is.na(link_of_source),
+          is.na('link_of_source'),
           fun_source_link(x = source),
-          link_of_source
+          'link_of_source'
         ),
         copyright = as.character(d6geodata::get_copyright(source = source,
-                                                      year = lubridate::year(date_of_compile)))
+                                                      year = lubridate::year('date_of_compile')))
       )
 
     doit <- c("Yes", "No")[utils::menu(c("Yes", "No"), title = "Do you want to change something?")]
@@ -189,7 +189,7 @@ fun_file <- function(){
 
 # function for source
 fun_source <- function(){
-  file_in <- c("bkg", "fisbroker", "copernicus", "usgs", "osm", "other")[utils::menu(c("bkg", "fisbroker", "copernicus", "usgs", "osm", "other"), title = "choose source:")]
+  file_in <- c("bkg", "fisbroker", "copernicus", "usgs", "osm", "metaver", "other")[utils::menu(c("bkg", "fisbroker", "copernicus", "usgs", "osm", "metaver", "other"), title = "choose source:")]
   if(file_in %in% "other"){
     file_in <- base::readline("enter source:")
   }
@@ -236,10 +236,10 @@ fun_source_link <- function(x) {
 
 get_copyright <- function(source, year = lubridate::year(Sys.Date())){
   if(source %in% "bkg"){
-    return(paste0("© GeoBasis-DE / BKG (", year,")"))
+    return(paste0("\u00A9 GeoBasis-DE / BKG (", year,")"))
   }
   if(source %in% "copernicus"){
-    return(paste0("© European Union, Copernicus Land Monitoring Service ", year, ", European Environment Agency (EEA)"))
+    return(paste0("\u00A9 European Union, Copernicus Land Monitoring Service ", year, ", European Environment Agency (EEA)"))
   }
   if(source %in% "fisbroker"){
     return(paste0("Amt für Statistik Berlin-Brandenburg ", year))
@@ -251,7 +251,7 @@ get_copyright <- function(source, year = lubridate::year(Sys.Date())){
     return(paste0("Data/Maps Copyright 2018 Geofabrik GmbH and OpenStreetMap Contributors"))
   }
   if(source %in% "metaver"){
-    return(paste0("© Landesbetrieb Geoinformation und Vermessung. Alle Rechte vorbehalten."))
+    return(paste0("\u00A9 Landesbetrieb Geoinformation und Vermessung. Alle Rechte vorbehalten."))
   }
   else{
     return(base::readline("enter license:"))
