@@ -9,6 +9,8 @@ download_fisbroker_atom(zip_link, path, name)
 \arguments{
 \item{zip_link}{the atom url of the data from fisbroker.}
 
+\item{path}{path where it has to be stored}
+
 \item{name}{name of the folder where the data should be stored. If dolder does not exist the folder will be created}
 }
 \value{

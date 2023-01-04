@@ -1,2 +1,0 @@
-"folder_name","name","crs","epsg","year_of_data","units_of_data","resolution","type_of_data","type_of_file","source","link_of_source","date_of_compile","license","short_description","modified"
-NA,NA,"+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs","25833","2012","m","100m","ordered_categorical",".asc","bkg","https://gdz.bkg.bund.de","2022-12-01","© GeoBasis-DE / BKG (2022)","bla",NA

@@ -11,7 +11,7 @@
 get_geodata <- function(data_name, download_data = FALSE){
   meta <- utils::read.csv(here::here("data-proc", "meta_data_overview_proc.csv"))
 
-  tif <- raster::raster((meta %>% dplyr::filter(folder_name %in% data_name))$dropbox_link)
+  tif <- raster::raster((meta %>% dplyr::filter('folder_name' %in% data_name))$dropbox_link)
 
      if(download_data %in% TRUE){
 

@@ -212,11 +212,16 @@ fun_source_link <- function(x) {
                ifelse(
                  x == "osm",
                  "https://download.geofabrik.de/",
+                 ifelse(
+                   x == "metaver",
+                   "https://metaver.de/trefferanzeige?docuuid=B57B9F35-AFFF-49F2-BA32-618D1A1CD412#detail_overview",
                base::readline("enter source link:")
+               )
                )
              )
            )
-         ))
+         )
+         )
 }
 
 #' function for getting copyright of the data
@@ -244,6 +249,9 @@ get_copyright <- function(source, year = lubridate::year(Sys.Date())){
   }
   if(source %in% "osm"){
     return(paste0("Data/Maps Copyright 2018 Geofabrik GmbH and OpenStreetMap Contributors"))
+  }
+  if(source %in% "metaver"){
+    return(paste0("© Landesbetrieb Geoinformation und Vermessung. Alle Rechte vorbehalten."))
   }
   else{
     return(base::readline("enter license:"))
