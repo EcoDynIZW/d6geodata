@@ -4,10 +4,12 @@
 \alias{get_geodata}
 \title{get the processed geoadata from droppbox}
 \usage{
-get_geodata(data_name, download_data = FALSE)
+get_geodata(data_name, path_to_cloud, download_data = FALSE)
 }
 \arguments{
 \item{data_name}{the name of the data folder (e.g. copied from the website)}
+
+\item{path_to_cloud}{set the path where your cloud is located. Like "E:/PopDynCloud"}
 
 \item{download_data}{do you want to download the data? Choose "TRUE" or "FALSE"}
 }

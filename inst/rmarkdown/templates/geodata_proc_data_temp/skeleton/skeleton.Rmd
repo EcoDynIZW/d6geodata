@@ -28,7 +28,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = TRUE, message = TRUE,
 ```{r packages}
 # devtools::install_github("EcoDynIZW/d6geodata")
 
-sapply(list("sf", "tidyverse", "raster", "terra", "here" , "d6geodata"), 
+sapply(list("sf", "tidyverse", "terra", "here" , "d6geodata"), 
        library, character.only = TRUE, logical.return = TRUE)
 ```
 
