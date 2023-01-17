@@ -11,16 +11,20 @@
 
 get_geodata <-
   function(data_name, path_to_cloud, download_data = FALSE) {
+    geo_path <- paste(
+      path_to_cloud,
+      "Geodata",
+      c("data-raw", "data-proc")[utils::menu(c("raw", "processed"), title = "Raw or processed data?")],
+      stringi::stri_c(unlist(
+        stringi::stri_split(data_name, regex = "_")
+      )[2]),
+      data_name,
+      sep = "/")
+
     tif <-
       terra::rast(
         paste(
-          path_to_cloud,
-          "Geodata",
-          "data-proc",
-          stringi::stri_c(unlist(
-            stringi::stri_split(data_name, regex = "_")
-          )[2]),
-          data_name,
+          geo_path,
           stringi::stri_replace_last_fixed(data_name, "_", "."),
           sep = "/"
         )
@@ -29,14 +33,7 @@ get_geodata <-
     if (download_data %in% TRUE) {
       dir.create(here::here("data-raw", data_name))
 
-base::file.copy(from = paste(
-  path_to_cloud,
-  "Geodata",
-  "data-proc",
-  stringi::stri_c(unlist(stringi::stri_split(data_name, regex = "_"))[2]),
-  data_name,
-  sep = "/"
-),
+base::file.copy(from = geo_path,
 to = here::here("data-raw"),
 recursive = TRUE)
 
