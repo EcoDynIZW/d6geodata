@@ -21,14 +21,31 @@ get_geodata <-
       data_name,
       sep = "/")
 
-    tif <-
-      terra::rast(
-        paste(
-          geo_path,
-          stringi::stri_replace_last_fixed(data_name, "_", "."),
-          sep = "/"
+    if(utils::tail(unlist(stringr::str_split(data_name, "_")), n = 1) %in% c("tif", "asc")){
+
+      data <-
+        terra::rast(
+          paste(
+            geo_path,
+            stringi::stri_replace_last_fixed(data_name, "_", "."),
+            sep = "/"
+          )
         )
-      )
+    }
+
+    if(utils::tail(unlist(stringr::str_split(data_name, "_")), n = 1) %in% "gpkg"){
+
+      data <-
+        sf::st_read(
+          paste(
+            geo_path,
+            stringi::stri_replace_last_fixed(data_name, "_", "."),
+            sep = "/"
+          )
+        )
+    }
+
+
 
     if (download_data %in% TRUE) {
       dir.create(here::here("data-raw", data_name))
@@ -39,7 +56,7 @@ recursive = TRUE)
 
   }
 
-    return(tif)
+    return(data)
     }
 
 
