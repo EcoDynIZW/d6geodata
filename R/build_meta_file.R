@@ -68,9 +68,9 @@ build_meta_file <- function(path = ".", data_name = ""){
       ) %>%
       dplyr::mutate_each(dplyr::funs(empty_as_na)) %>%
       dplyr::mutate(
-        crs = suppressWarnings(sf::st_crs(as.numeric('epsg'))$proj4string),
+        crs = suppressWarnings(sf::st_crs(as.numeric(epsg))$proj4string),
         link_of_source = ifelse(
-          is.na('link_of_source'),
+          is.na(link_of_source),
           fun_source_link(x = source),
           'link_of_source'
         ),

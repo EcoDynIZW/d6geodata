@@ -60,8 +60,6 @@ meta <-
       utils::read.csv(list.files(path, pattern = '.csv$', recursive = TRUE, full.names = TRUE)) %>%
   dplyr::mutate(dplyr::across(dplyr::everything(), as.character))
 
-tif <-
-  terra::rast(list.files(path, pattern = '.tif$', recursive = TRUE, full.names = TRUE))
 ```\n\n",
     "```{r data-table}
 meta_gt <- gt::gt(meta %>%
