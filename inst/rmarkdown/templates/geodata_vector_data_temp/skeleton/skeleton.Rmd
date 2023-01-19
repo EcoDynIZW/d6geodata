@@ -28,7 +28,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = TRUE, message = TRUE,
 ```{r packages}
 # devtools::install_github("EcoDynIZW/d6geodata")
 
-sapply(list("sf", "tidyverse", "raster", "terra", "here" , "d6geodata"), 
+sapply(list("sf", "tidyverse", "terra", "here" , "d6geodata"), 
        library, character.only = TRUE, logical.return = TRUE)
 ```
 
@@ -60,8 +60,8 @@ berlin_3035_sf <-
     here(
       "data-raw",
       "berlin",
-      "berlin_districts_2020_3035",
-      "berlin_districts_2020_3035.gpkg"
+      "districs_berlin_2022_poly_03035_gpkg",
+      "districs_berlin_2022_poly_03035.gpkg"
     )
   )
 
@@ -70,9 +70,9 @@ berlin_3035_sf <-
 # processing
 
 ```{r processing}
-tif <- 
+data <- 
 
-writeRaster(tif, here(path, stringi::stri_replace_last_fixed(data_name, "_", ".")), overwrite = TRUE)
+sf::st_write(data, here(path, stringi::stri_replace_last_fixed(data_name, "_", ".")), overwrite = TRUE)
 ```
 
 # create meta data file
@@ -85,9 +85,7 @@ meta <- d6geodata::build_meta_file(path = here::here(path), data_name = data_nam
 
 ```{r}
 p_base_map <-
-  ggplot2::ggplot() +
-  stars::geom_stars(data = stars::st_as_stars(tif)) +
-  ggplot2::coord_sf(expand = FALSE)
+  ggplot() + geom_sf(data = data, aes(fill = vegvol2020), color = NA) 
 
 if(meta$type_of_data == 'binary_categorical') {
   p_map <- d6geodata::plot_binary_map(tif = tif, p_base_map = p_base_map)

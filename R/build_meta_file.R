@@ -75,7 +75,7 @@ build_meta_file <- function(path = ".", data_name = ""){
           'link_of_source'
         ),
         copyright = as.character(d6geodata::get_copyright(source = source,
-                                                      year = lubridate::year('date_of_compile')))
+                                                      year = lubridate::year(date_of_compile)))
       )
 
     doit <- c("Yes", "No")[utils::menu(c("Yes", "No"), title = "Do you want to change something?")]
