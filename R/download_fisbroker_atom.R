@@ -17,7 +17,7 @@ download_fisbroker_atom <- function(zip_link, path ,name){
 
   # you have to set the crs because it is missing sometimes. The default epsg on fisbroker is 25833
   ras <- terra::rast(list.files(paste(path, name, sep = "/"),
-                                    pattern = ".tif$", full.names = TRUE)[1], crs = "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs")
+                                    pattern = ".tif$", full.names = TRUE)[1])
   return(ras)
 }
 
