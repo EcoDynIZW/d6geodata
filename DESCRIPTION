@@ -17,4 +17,5 @@ Imports:
 	here,
 	dplyr,
 	terra,
-	sf
+	sf,
+	curl
