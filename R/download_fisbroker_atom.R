@@ -17,7 +17,7 @@ download_fisbroker_atom <- function(zip_link, path ,name){
   curl::curl_download(zip_link, destfile = here::here(path, name, paste0(name, ".tif")))
 
   # you have to set the crs because it is missing sometimes. The default epsg on fisbroker is 25833
-  ras <- terra::rast(list.files(paste(path, name, sep = "/"),
+  ras <- terra::rast(list.files(here::here(path, name),
                                     pattern = ".tif$", full.names = TRUE)[1])
   return(ras)
 }
