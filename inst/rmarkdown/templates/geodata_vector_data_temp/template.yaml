@@ -1,4 +1,4 @@
-name: geodata_raw_data_temp
+name: geodata_vector_data_temp
 description: >
-   A template to help to save raw data in a standardised way
+   A template to help to save vector data in a standardised way
 create_dir: FALSE

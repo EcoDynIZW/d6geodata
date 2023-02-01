@@ -4,12 +4,10 @@
 \alias{geo_overview}
 \title{show overview of geodata}
 \usage{
-geo_overview(
-  folder = c("main", "sub")[utils::menu(c("main", "sub"), title = "choose folder:")]
-)
+geo_overview(path_to_cloud)
 }
 \arguments{
-\item{folder}{do you want the main or sub folders}
+\item{path_to_cloud}{set the path to the cloud}
 }
 \value{
 a list with folder names
