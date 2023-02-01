@@ -11,13 +11,15 @@
 
 #### Function
 download_fisbroker_atom <- function(zip_link, path ,name){
-  temp <- tempfile()
-  utils::download.file(zip_link, temp, method = "auto", quiet = FALSE)
-  utils::unzip(temp, exdir = paste(path, name, sep = "/"))
+  curl::curl_download(zip_link, destfile = here::here(path ,paste0(name, ".zip")))
+  utils::unzip(zipfile = here::here(path, paste0(name, ".zip")), exdir = here::here(path, name))
+  suppressMessages(file.remove(here::here(path, paste0(name, ".zip"))))
+  curl::curl_download(zip_link, destfile = here::here(path, name, paste0(name, ".tif")))
 
   # you have to set the crs because it is missing sometimes. The default epsg on fisbroker is 25833
   ras <- terra::rast(list.files(paste(path, name, sep = "/"),
-                                    pattern = ".tif$", full.names = TRUE)[1], crs = "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs")
+                                    pattern = ".tif$", full.names = TRUE)[1])
   return(ras)
 }
+
 
