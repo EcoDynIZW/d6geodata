@@ -14,7 +14,14 @@ get_geodata <-
     geo_path <- paste(
       path_to_cloud,
       "Geodata",
-      c("data-raw", "data-proc")[utils::menu(c("raw", "processed"), title = "Raw or processed data?")],
+      paste0(ifelse(dir.exists(
+        paste(
+          path_to_cloud,
+          "Geodata",
+          "data-raw",
+          stringi::stri_c(unlist(
+            stringi::stri_split(data_name, regex = "_")
+          )[2]), data_name, sep = "/")) == T, "data-raw", "data-proc")),
       stringi::stri_c(unlist(
         stringi::stri_split(data_name, regex = "_")
       )[2]),
@@ -33,7 +40,7 @@ get_geodata <-
         )
     }
 
-    if(utils::tail(unlist(stringr::str_split(data_name, "_")), n = 1) %in% "gpkg"){
+    if(utils::tail(unlist(stringr::str_split(data_name, "_")), n = 1) %in% c("gpkg", "shp")){
 
       data <-
         sf::st_read(
@@ -50,13 +57,13 @@ get_geodata <-
     if (download_data %in% TRUE) {
       dir.create(here::here("data-raw", data_name))
 
-base::file.copy(from = geo_path,
-to = here::here("data-raw"),
-recursive = TRUE)
+      base::file.copy(from = geo_path,
+                      to = here::here("data-raw"),
+                      recursive = TRUE)
 
-  }
+    }
 
     return(data)
-    }
+  }
 
 
