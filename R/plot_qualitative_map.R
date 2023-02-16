@@ -27,7 +27,7 @@ plot_qualitative_map <- function(tif){
       rcartocolor::scale_fill_carto_d(
         palette = "Bold",
         name = NULL,
-        labels = c("other", terra::sort(unique(terra::values(tif_legend))[-1,]))
+        labels = c("other", terra::sort(unique(terra::values(tif_legend)))[-1])
       ) +
       ggplot2::guides(fill = ggplot2::guide_legend(label.position = "bottom"))
   } else{
