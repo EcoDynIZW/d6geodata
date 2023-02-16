@@ -4,12 +4,10 @@
 \alias{plot_qualitative_map}
 \title{plot qualitative maps}
 \usage{
-plot_qualitative_map(tif, p_base_map)
+plot_qualitative_map(tif)
 }
 \arguments{
 \item{tif}{the raster that should be plotted}
-
-\item{p_base_map}{base map}
 }
 \value{
 a plot

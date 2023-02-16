@@ -4,12 +4,10 @@
 \alias{plot_binary_map}
 \title{plot binary maps}
 \usage{
-plot_binary_map(tif, p_base_map)
+plot_binary_map(tif)
 }
 \arguments{
 \item{tif}{the raster that should be plotted}
-
-\item{p_base_map}{base map}
 }
 \value{
 a plot

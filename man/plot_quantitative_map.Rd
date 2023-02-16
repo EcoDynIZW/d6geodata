@@ -4,12 +4,10 @@
 \alias{plot_quantitative_map}
 \title{plot quantitative maps}
 \usage{
-plot_quantitative_map(tif, p_base_map)
+plot_quantitative_map(tif)
 }
 \arguments{
 \item{tif}{the raster that should be plotted}
-
-\item{p_base_map}{base map}
 }
 \value{
 a plot
