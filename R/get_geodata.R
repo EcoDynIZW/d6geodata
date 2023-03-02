@@ -55,11 +55,36 @@ get_geodata <-
 
 
     if (download_data %in% TRUE) {
-      dir.create(here::here("data-raw", data_name))
+      if(!base::dir.exists(paths = here::here("data-raw", data_name))){
+        base::dir.create(path = here::here("data-raw", data_name),
+                         showWarnings = TRUE,
+                         recursive = TRUE)}
 
-      base::file.copy(from = geo_path,
-                      to = here::here("data-raw"),
-                      recursive = TRUE)
+      base::file.copy(
+        from = c(
+          paste0(geo_path, "/", data_name, ".rmd"),
+          paste0(geo_path, "/meta-data_", data_name, ".csv"),
+          paste0(
+            geo_path,
+            "/",
+            stringi::stri_replace_last_fixed(data_name, "_", ".")
+          )
+        ),
+        to = c(
+          paste0(here::here("data-raw", data_name), "/", data_name, ".rmd"),
+          paste0(
+            here::here("data-raw", data_name),
+            "/meta-data_",
+            data_name,
+            ".csv"
+          ),
+          paste0(
+            here::here("data-raw", data_name),
+            "/",
+            stringi::stri_replace_last_fixed(data_name, "_", ".")
+          )
+        )
+      )
 
     }
 
