@@ -84,19 +84,16 @@ meta <- d6geodata::build_meta_file(path = here::here(path), data_name = data_nam
 # plot file
 
 ```{r}
-p_base_map <-
-  ggplot2::ggplot() +
-  stars::geom_stars(data = stars::st_as_stars(tif)) +
-  ggplot2::coord_sf(expand = FALSE)
+tif_plot <- tif
 
 if(meta$type_of_data == 'binary_categorical') {
-  p_map <- d6geodata::plot_binary_map(tif = tif, p_base_map = p_base_map)
+  p_map <- d6geodata::plot_binary_map(tif = tif_plot)
   }
 if(meta$type_of_data %in% c('continuous_numeric', 'discrete_numeric')) {
-  p_map <- d6geodata::plot_quantitative_map(tif = tif, p_base_map = p_base_map)
+  p_map <- d6geodata::plot_quantitative_map(tif = tif_plot)
 }
 if(meta$type_of_data %in% c('unordered_categorical', 'ordered_categorical')) {
-  p_map <- d6geodata::plot_qualitative_map(tif = tif, p_base_map = p_base_map)
+  p_map <- d6geodata::plot_qualitative_map(tif = tif_plot)
 }
 
 saveRDS(p_map, here(path, paste0(data_name, ".rds")))
