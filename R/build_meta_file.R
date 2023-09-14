@@ -10,7 +10,7 @@
 
 
 build_meta_file <- function(path = ".", data_name = ""){
-library(dplyr)
+
   data <- dplyr::tibble(folder_name = NA,
                         name = NA,
                         crs = NA,

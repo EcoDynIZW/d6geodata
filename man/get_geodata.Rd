@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_geodata.R
 \name{get_geodata}
 \alias{get_geodata}
-\title{get the processed geoadata from droppbox}
+\title{get geoadata from PopDynCloud}
 \usage{
 get_geodata(data_name, path_to_cloud, download_data = FALSE)
 }
@@ -17,7 +17,9 @@ get_geodata(data_name, path_to_cloud, download_data = FALSE)
 the file in a folder named after the file
 }
 \description{
-get the processed geoadata from droppbox
+If you run geo_overview() first you can see wich data is available.
+From there you can copy the name of the file and paste in 'data_name'.
+Works for vector data and raster data.
 }
 \examples{
 \dontrun{

@@ -34,10 +34,3 @@ geo_overview <- function(path_to_cloud){
   }
 }
 
-
-#devtools::install_local(force = TRUE)
-# d6geodata::geo_overview(path = "C:/Users/wenzler/PopDynIZW Dropbox/GeoData/",folder = "main")
-
-# c("sub","main")[utils::menu(c("sub","main"), title = "choose folder:")]
-# base::readline("choose folder:", c("sub","main"))
-

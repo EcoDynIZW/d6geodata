@@ -2,21 +2,23 @@
 % Please edit documentation in R/temp_raster_berlin.R
 \name{temp_ras}
 \alias{temp_ras}
-\title{get template raster for Berlin}
+\title{Get template raster for Berlin. This can be used to rasterize vecotr data within Berlin borders.
+This is made by using the copernicus database rasters as template.}
 \usage{
-temp_ras(resolution)
+temp_ras(resolution = 10)
 }
 \arguments{
-\item{resolution}{resolution in meters}
+\item{resolution}{resolution in meters, default 10 meters}
 }
 \value{
 a template spatRaster
 }
 \description{
-get template raster for Berlin
+Get template raster for Berlin. This can be used to rasterize vecotr data within Berlin borders.
+This is made by using the copernicus database rasters as template.
 }
 \examples{
 \dontrun{
-temp_rast(resolution)
+temp_rast(resolution = 10)
 }
 }

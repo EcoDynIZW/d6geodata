@@ -1,4 +1,10 @@
-#' get the processed geoadata from droppbox
+#' get geoadata from PopDynCloud
+#'
+#' If you run geo_overview() first you can see wich data is available.
+#' From there you can copy the name of the file and paste in 'data_name'.
+#' Works for vector data and raster data.
+#'
+#'
 #' @return the file in a folder named after the file
 #' @param data_name the name of the data folder (e.g. copied from the website)
 #' @param download_data do you want to download the data? Choose "TRUE" or "FALSE"
