@@ -94,9 +94,11 @@ meta <- dplyr::tibble(
   modified = NA
 ) |> 
   mutate(link_of_source = d6geodata:::fun_source_link(x = source),
-          copyright = d6geodata:::get_copyright(source)) |> 
-  utils::write.table(base::paste0(path, "/meta-data_", 
-    folder_name, ".csv"), row.names = FALSE, sep = ",")
+          copyright = d6geodata:::get_copyright(source))
+
+
+write.table(meta, base::paste0(path, "/meta-data_", 
+    data_name, ".csv"), row.names = FALSE, sep = ",")
 ```
 
 # plot file
