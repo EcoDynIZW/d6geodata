@@ -37,7 +37,7 @@ sapply(list("sf", "tidyverse", "terra", "here" , "d6geodata"),
 ```{r path}
 data_name <- d6geodata::data_name()
 
-path <- here("data-proc", unlist(str_split(data_name, "_"))[2], data_name)
+path <- here("data", unlist(str_split(data_name, "_"))[2], data_name)
 
 dir.create(path = here::here(path))
 ```
@@ -45,7 +45,7 @@ dir.create(path = here::here(path))
 # Data
 
 ```{r data}
-(germany_3035_sf <- st_read(here("data-raw", 
+(germany_3035_sf <- st_read(here("data", 
                                  "germany",
                                  "administrative_units_germany_2020_28532_bkg_shp",
                                  "vg2500_01-01.utm32s.shape", 
@@ -58,7 +58,7 @@ dir.create(path = here::here(path))
 berlin_3035_sf <-
   st_read(
     here(
-      "data-raw",
+      "data",
       "berlin",
       "districs_berlin_2022_poly_03035_gpkg",
       "districs_berlin_2022_poly_03035.gpkg"
@@ -78,14 +78,32 @@ sf::st_write(data, here(path, stringi::stri_replace_last_fixed(data_name, "_", "
 # create meta data file
 
 ```{r meatadata}
-meta <- d6geodata::build_meta_file(path = here::here(path), data_name = data_name)
+meta <- dplyr::tibble(
+  folder_name = data_name,
+  name = stringi::stri_replace_last_fixed(data_name, "_", "."),
+  epsg = ,
+  crs = st_crs()$proj4string,
+  year_of_data = ,
+  units_of_data = "",
+  resolution = "",
+  type_of_data = d6geodata:::fun_type(),
+  type_of_file = d6geodata:::fun_file(),
+  date_of_compile = as.character(Sys.Date()),
+  source = d6geodata:::fun_source(),
+  short_description = "",
+  modified = NA
+) |> 
+  mutate(link_of_source = d6geodata:::fun_source_link(x = source),
+          copyright = d6geodata:::get_copyright(source)) |> 
+  utils::write.table(base::paste0(path, "/meta-data_", 
+    folder_name, ".csv"), row.names = FALSE, sep = ",")
 ```
 
 # plot file
 
 ```{r}
 p_base_map <-
-  ggplot() + geom_sf(data = data, aes(fill = vegvol2020), color = NA) 
+  ggplot() + geom_sf(data = data, aes(fill = ), color = NA) 
 
 if(meta$type_of_data == 'binary_categorical') {
   p_map <- d6geodata::plot_binary_map(tif = tif, p_base_map = p_base_map)
