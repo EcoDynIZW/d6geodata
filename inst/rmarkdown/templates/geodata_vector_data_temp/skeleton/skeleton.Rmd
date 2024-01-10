@@ -106,18 +106,16 @@ write.table(meta, base::paste0(path, "/meta-data_",
 ```{r}
 data_sf <- data %>% dplyr::select()
 
-column <- ''
-
 p_base_map <-
-  ggplot() + geom_sf(data = data_sf, aes(fill = column, group = group), color = NA) 
+  ggplot() + geom_sf(data = data_sf, aes(fill = ), color = NA) 
  
 if(meta$type_of_data %in% c('continuous_numeric', 'discrete_numeric')) {
-  p_map <- p_base_map + rcartocolor::scale_fill_carto_d(palette = "Emrld", 
+  p_map <- p_base_map + rcartocolor::scale_fill_carto_c(palette = "Emrld", 
         name = NULL) + ggplot2::guides(fill = ggplot2::guide_legend(label.position = "bottom"))
 }
 if(meta$type_of_data %in% c('unordered_categorical', 'ordered_categorical')) {
  p_base_map +
-    rcartocolor::scale_fill_carto_c(
+    rcartocolor::scale_fill_carto_d(
       palette = "Bold",
       breaks = as.numeric((table((data %>% data.frame())[, column]) %>%
                   data.frame() %>%
