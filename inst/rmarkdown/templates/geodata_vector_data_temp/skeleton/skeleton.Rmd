@@ -104,17 +104,28 @@ write.table(meta, base::paste0(path, "/meta-data_",
 # plot file
 
 ```{r}
-p_base_map <-
-  ggplot() + geom_sf(data = data, aes(fill = ), color = NA) 
+data_sf <- data %>% dplyr::select()
 
-if(meta$type_of_data == 'binary_categorical') {
-  p_map <- d6geodata::plot_binary_map(tif = tif, p_base_map = p_base_map)
-  }
+column <- ''
+
+p_base_map <-
+  ggplot() + geom_sf(data = data_sf, aes(fill = column, group = group), color = NA) 
+ 
 if(meta$type_of_data %in% c('continuous_numeric', 'discrete_numeric')) {
-  p_map <- d6geodata::plot_quantitative_map(tif = tif, p_base_map = p_base_map)
+  p_map <- p_base_map + rcartocolor::scale_fill_carto_d(palette = "Emrld", 
+        name = NULL) + ggplot2::guides(fill = ggplot2::guide_legend(label.position = "bottom"))
 }
 if(meta$type_of_data %in% c('unordered_categorical', 'ordered_categorical')) {
-  p_map <- d6geodata::plot_qualitative_map(tif = tif, p_base_map = p_base_map)
+ p_base_map +
+    rcartocolor::scale_fill_carto_c(
+      palette = "Bold",
+      breaks = as.numeric((table((data %>% data.frame())[, column]) %>%
+                  data.frame() %>%
+                  dplyr::mutate(Var1 = 1:n()) %>% 
+                  dplyr::filter(Var1 %in% base::seq(1, max(Var1), round(max(Var1)/5))))$'Var1'),
+      name = NULL
+    ) +
+    ggplot2::guides(fill = ggplot2::guide_legend(label.position = "bottom"))
 }
 
 saveRDS(p_map, here(path, paste0(data_name, ".rds")))
