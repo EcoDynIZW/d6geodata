@@ -114,7 +114,8 @@ if(meta$type_of_data %in% c('continuous_numeric', 'discrete_numeric')) {
         name = NULL) + ggplot2::guides(fill = ggplot2::guide_legend(label.position = "bottom"))
 }
 if(meta$type_of_data %in% c('unordered_categorical', 'ordered_categorical')) {
- p_base_map +
+  p_map <- 
+   p_base_map +
     rcartocolor::scale_fill_carto_d(
       palette = "Bold",
       breaks = as.numeric((table((data %>% data.frame())[, column]) %>%
