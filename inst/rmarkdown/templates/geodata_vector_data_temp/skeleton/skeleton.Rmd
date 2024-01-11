@@ -72,7 +72,8 @@ berlin_3035_sf <-
 ```{r processing}
 data <- 
 
-sf::st_write(data, here(path, stringi::stri_replace_last_fixed(data_name, "_", ".")), overwrite = TRUE)
+sf::st_write(data, here(path, stringi::stri_replace_last_fixed(data_name, "_", ".")), 
+             delete_layer = TRUE)
 ```
 
 # create meta data file
