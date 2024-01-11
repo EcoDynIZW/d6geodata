@@ -104,10 +104,21 @@ write.table(meta, base::paste0(path, "/meta-data_",
 # plot file
 
 ```{r}
-data_sf <- data %>% dplyr::select()
+data_sf <- data %>% dplyr::select() # add column name
+
+breaks <- table((data_sf %>% data.frame())[, ""]) %>% # add column name 
+                  data.frame() %>%
+                  dplyr::mutate(Var2 = 1:n()) %>% 
+                  dplyr::filter(Var2 %in% base::seq(1, max(Var2), round(max(Var2)/5)))
+
+data_sf <- data_sf |>
+  group_by(nutzung) |>
+  mutate(label = ifelse(nutzung %in% droplevels(breaks$Var1)[-1],
+                        , # add column name
+                        "other")) 
 
 p_base_map <-
-  ggplot() + geom_sf(data = data_sf, aes(fill = ), color = NA) 
+  ggplot() + geom_sf(data = data_sf, aes(fill = label), color = NA) 
  
 if(meta$type_of_data %in% c('continuous_numeric', 'discrete_numeric')) {
   p_map <- p_base_map + rcartocolor::scale_fill_carto_c(palette = "Emrld", 
@@ -116,12 +127,10 @@ if(meta$type_of_data %in% c('continuous_numeric', 'discrete_numeric')) {
 if(meta$type_of_data %in% c('unordered_categorical', 'ordered_categorical')) {
   p_map <- 
    p_base_map +
-    rcartocolor::scale_fill_carto_d(
-      palette = "Bold",
-      breaks = as.numeric((table((data %>% data.frame())[, column]) %>%
-                  data.frame() %>%
-                  dplyr::mutate(Var1 = 1:n()) %>% 
-                  dplyr::filter(Var1 %in% base::seq(1, max(Var1), round(max(Var1)/5))))$'Var1'),
+    scale_fill_manual(
+      breaks = unique(data_sf$label),
+      labels = unique(data_sf$label),
+      values = rev(c("#7F3C8D", "#11A579", "#3969AC", "#F2B701", "#E73F74", "#A5AA99")),
       name = NULL
     ) +
     ggplot2::guides(fill = ggplot2::guide_legend(label.position = "bottom"))
