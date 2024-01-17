@@ -204,7 +204,7 @@ fun_source_link <- function(x) {
            x == "fisbroker",
            "https://stadtentwicklung.berlin.de/geoinformation/fis-broker/",
            ifelse(
-             x == "fisbroker - Umweltatals",
+             x == "fisbroker - Umweltatlas",
              "https://stadtentwicklung.berlin.de/geoinformation/fis-broker/",
            ifelse(
              x == "copernicus",
