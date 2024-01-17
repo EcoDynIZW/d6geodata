@@ -189,7 +189,7 @@ fun_file <- function(){
 
 # function for source
 fun_source <- function(){
-  file_in <- c("bkg", "fisbroker", "copernicus", "usgs", "osm", "metaver", "other")[utils::menu(c("bkg", "fisbroker", "copernicus", "usgs", "osm", "metaver", "other"), title = "choose source:")]
+  file_in <- c("bkg", "fisbroker", "fisbroker - Umweltatlas", "copernicus", "usgs", "osm", "metaver", "other")[utils::menu(c("bkg", "fisbroker", "copernicus", "usgs", "osm", "metaver", "other"), title = "choose source:")]
   if(file_in %in% "other"){
     file_in <- base::readline("enter source:")
   }
@@ -201,7 +201,7 @@ fun_source_link <- function(x) {
   ifelse(x == "bkg",
          "https://gdz.bkg.bund.de",
          ifelse(
-           x == "fisbroker",
+           x %in% c("fisbroker", "fisbroker - Umweltatals"),
            "https://stadtentwicklung.berlin.de/geoinformation/fis-broker/",
            ifelse(
              x == "copernicus",
@@ -243,6 +243,9 @@ get_copyright <- function(source, year = lubridate::year(Sys.Date())){
   }
   if(source %in% "fisbroker"){
     return(paste0("Amt für Statistik Berlin-Brandenburg ", year))
+  }
+  if(source %in% "fisbroker - Umweltatlas"){
+      return(paste0("Umweltatlas Berlin ", base::readline("enter original Name:")))
   }
   if(source %in% "usgs"){
     return(base::readline("go on https://www.usgs.gov/centers/eros/data-citation and cite by specific product:"))
