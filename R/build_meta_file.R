@@ -189,7 +189,7 @@ fun_file <- function(){
 
 # function for source
 fun_source <- function(){
-  file_in <- c("bkg", "fisbroker", "fisbroker - Umweltatlas", "copernicus", "usgs", "osm", "metaver", "other")[utils::menu(c("bkg", "fisbroker", "copernicus", "usgs", "osm", "metaver", "other"), title = "choose source:")]
+  file_in <- c("bkg", "fisbroker", "fisbroker - Umweltatlas", "copernicus", "usgs", "osm", "metaver", "other")[utils::menu(c("bkg", "fisbroker", "fisbroker - Umweltatlas", "copernicus", "usgs", "osm", "metaver", "other"), title = "choose source:")]
   if(file_in %in% "other"){
     file_in <- base::readline("enter source:")
   }
