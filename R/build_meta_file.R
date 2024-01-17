@@ -249,7 +249,7 @@ get_copyright <- function(source, year = lubridate::year(Sys.Date())){
     return(paste0("Amt für Statistik Berlin-Brandenburg ", year))
   }
   if(source %in% "fisbroker - Umweltatlas"){
-      return(paste0("Umweltatlas Berlin ", base::readline("enter original Name:")))
+      return(paste0("Umweltatlas Berlin / ", base::readline("enter original Name:")))
   }
   if(source %in% "usgs"){
     return(base::readline("go on https://www.usgs.gov/centers/eros/data-citation and cite by specific product:"))
