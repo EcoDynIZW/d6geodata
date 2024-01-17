@@ -201,8 +201,11 @@ fun_source_link <- function(x) {
   ifelse(x == "bkg",
          "https://gdz.bkg.bund.de",
          ifelse(
-           x %in% c("fisbroker", "fisbroker - Umweltatals"),
+           x == "fisbroker",
            "https://stadtentwicklung.berlin.de/geoinformation/fis-broker/",
+           ifelse(
+             x == "fisbroker - Umweltatals",
+             "https://stadtentwicklung.berlin.de/geoinformation/fis-broker/",
            ifelse(
              x == "copernicus",
              "https://land.copernicus.eu/",
@@ -220,6 +223,7 @@ fun_source_link <- function(x) {
                )
              )
            )
+         )
          )
          )
 }
