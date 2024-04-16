@@ -54,7 +54,8 @@ ggplot2::theme_update(
 
 # get path
 path <-
-    paste0(ifelse(dir.exists('E:/PopDynCloud') == T, 'E:/PopDynCloud', 'C:/PopDynCloud'),  '/',  '",out_path,"')
+    paste0(ifelse(dir.exists('E:/PopDynCloud') == T, 'E:/PopDynCloud',
+    ifelse(dir.exists('C:/PopDynCloud') == T, 'C:/PopDynCloud', 'T:/wenzler')),  '/',  '",out_path,"')
 
 meta <-
       utils::read.csv(list.files(path, pattern = '.csv$', recursive = TRUE, full.names = TRUE)) %>%
@@ -71,7 +72,8 @@ meta_gt <- gt::gt(meta %>%
 ```\n\n",
     "```{r map}
 p_map <-
- readRDS(paste0(ifelse(dir.exists('E:/PopDynCloud') == T, 'E:/PopDynCloud', 'C:/PopDynCloud'), '/', '",out_path, '/', path_name ,"' ,'.rds'))
+ readRDS(paste0(ifelse(dir.exists('E:/PopDynCloud') == T, 'E:/PopDynCloud',
+    ifelse(dir.exists('C:/PopDynCloud') == T, 'C:/PopDynCloud', 'T:/wenzler')),  '/',  '",out_path, '/', path_name ,"' ,'.rds'))
 
 ```\n\n",
 

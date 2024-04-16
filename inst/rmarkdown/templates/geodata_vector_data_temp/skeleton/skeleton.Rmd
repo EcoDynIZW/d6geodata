@@ -105,33 +105,34 @@ write.table(meta, base::paste0(path, "/meta-data_",
 # plot file
 
 ```{r}
-col_nam <- base::readline("Enter column name:")
+col_nam <- names(data)[utils::menu(names(data), "Enter column name:")]
 
-data_sf <- data %>% dplyr::select(col_nam)
+data_sf <- data %>% dplyr::select(all_of(col_nam))
 
-p_base_map <-
-  ggplot() + geom_sf(data = data_sf, aes(fill = col_nam), color = NA) 
- 
+
 if(meta$type_of_data %in% c('continuous_numeric', 'discrete_numeric')) {
-  p_map <- p_base_map + rcartocolor::scale_fill_carto_c(palette = "Emrld", 
+  
+  p_map <- ggplot() + 
+    geom_sf(data = data_sf, aes(fill = .data[[{{ col_nam }}]]), color = NA) + 
+    rcartocolor::scale_fill_carto_c(palette = "Emrld", 
         name = meta$units_of_data) + ggplot2::guides(fill = ggplot2::guide_legend(label.position = "bottom",
                                                                                      title.position = "top")) +
                                                            theme(legend.title = element_text(hjust = 0.5))
 }
 if(meta$type_of_data %in% c('unordered_categorical', 'ordered_categorical')) {
 
-  
   breaks <- table((data_sf %>% data.frame())[, col_nam]) %>% 
                   data.frame() %>%
                   dplyr::mutate(Var2 = 1:n()) %>% 
                   dplyr::filter(Var2 %in% base::seq(1, max(Var2), round(max(Var2)/5)))
 
   data_sf <- data_sf |>
-    group_by(col_nam) |>
-    mutate(label = ifelse(col_nam%in% droplevels(breaks$Var1)[-1],
-                          col_nam,
-                          "other"))
-  
+    group_by(.data[[col_nam]]) |>
+    mutate(label = if_else(.data[[{{ col_nam }}]] %in% droplevels(breaks$Var1)[-1] ,.data[[{{ col_nam }}]] , "other"))
+
+p_base_map <-
+  ggplot() + geom_sf(data = data_sf, aes(fill = label), color = NA)   
+    
   p_map <- 
    p_base_map +
     scale_fill_manual(
@@ -139,8 +140,8 @@ if(meta$type_of_data %in% c('unordered_categorical', 'ordered_categorical')) {
       labels = unique(data_sf$label),
       values = rev(c("#7F3C8D", "#11A579", "#3969AC", "#F2B701", "#E73F74", "#A5AA99")),
       name = meta$units_of_data
-    ) +
-    + ggplot2::guides(fill = ggplot2::guide_legend(label.position = "bottom",
+    ) + 
+    ggplot2::guides(fill = ggplot2::guide_legend(label.position = "bottom",
                                                    title.position = "top")) +
                             theme(legend.title = element_text(hjust = 0.5))
 }
