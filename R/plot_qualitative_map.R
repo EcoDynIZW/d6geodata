@@ -21,17 +21,23 @@ plot_qualitative_map <- function(tif){
     ggplot2::ggplot() + stars::geom_stars(data = stars::st_as_stars(tif_plot)) +
       ggplot2::coord_sf(expand = FALSE) + rcartocolor::scale_fill_carto_d(
         palette = "Bold",
-        name = NULL,
+        name = meta$units_of_data,
         labels = forcats::fct_reorder(.f = c(terra::sort(unique(terra::values(tif_legend)))[-1], "other"),
                                       .x = c(terra::sort(unique(terra::values(tif_legend)))[-1], "other")
         )) +
-      ggplot2::guides(fill = ggplot2::guide_legend(label.position = "bottom"))
+      ggplot2::guides(fill = ggplot2::guide_legend(label.position = "bottom",
+                                                   title.position = "top")) +
+      theme(legend.title = element_text(hjust = 0.5))
   }
   else {
     tif_plot <- tif
     terra::values(tif_plot) <- terra::as.factor(terra::values(tif_plot))
     return(ggplot2::ggplot() + stars::geom_stars(data = stars::st_as_stars(tif_plot)) +
-             ggplot2::coord_sf(expand = FALSE) + rcartocolor::scale_fill_carto_d(palette = "Bold",
-                                                                                 name = NULL) + ggplot2::guides(fill = ggplot2::guide_legend(label.position = "bottom")))
+             ggplot2::coord_sf(expand = FALSE) +
+             rcartocolor::scale_fill_carto_d(palette = "Bold",
+                                             name = meta$units_of_data) +
+             ggplot2::guides(fill = ggplot2::guide_legend(label.position = "bottom",
+                                                          title.position = "top")) +
+             theme(legend.title = element_text(hjust = 0.5)))
   }
 }

@@ -13,7 +13,9 @@ plot_quantitative_map <- function(tif){
     ggplot2::coord_sf(expand = FALSE) +
     rcartocolor::scale_fill_carto_c(
       palette = "Emrld",
-      name = NULL
+      name = meta$units_of_data
     ) +
-    ggplot2::guides(fill = ggplot2::guide_legend(label.position = "bottom"))
+    ggplot2::guides(fill = ggplot2::guide_legend(label.position = "bottom",
+                                                 title.position = "top")) +
+    theme(legend.title = element_text(hjust = 0.5))
 }
