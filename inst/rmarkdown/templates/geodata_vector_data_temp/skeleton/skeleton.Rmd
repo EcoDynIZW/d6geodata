@@ -47,10 +47,8 @@ dir.create(path = here::here(path))
 ```{r data}
 (germany_3035_sf <- st_read(here("data", 
                                  "germany",
-                                 "administrative_units_germany_2020_28532_bkg_shp",
-                                 "vg2500_01-01.utm32s.shape", 
-                                 "vg2500",
-                                 "vg2500_lan.shp")) %>% 
+                                 "administrativ-units_germany_2020_polygon_28532_gpkg",
+                                 "administrativ-units_germany_2020_polygon_28532.gpkg")) %>% 
    dplyr::select(GEN) %>% 
    st_transform(3035)
  )
