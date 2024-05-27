@@ -145,6 +145,29 @@ p_base_map <-
 }
 
 saveRDS(p_map, here(path, paste0(data_name, ".rds")))
+
+if(meta$type_of_data %in% c('binary_categorical')) {
+  
+  data_sf$label <- "" # add label or column to be displayed
+  
+p_base_map <-
+  ggplot() + geom_sf(data = data_sf, aes(fill = label), color = "black")  
+
+ p_map <- 
+   p_base_map +
+    scale_fill_manual(
+      breaks = unique(data_sf$label),
+      labels = unique(data_sf$label),
+      values = rev(c("#A5AA99")),
+      name = "" # if column added enter name of column
+    ) + 
+    ggplot2::guides(fill = ggplot2::guide_legend(label.position = "bottom",
+                                                   title.position = "top")) +
+                            theme(legend.title = element_text(hjust = 0.5))
+
+}
+
+saveRDS(p_map, here(path, paste0(data_name, ".rds")))
 ```
 
 # create html file
