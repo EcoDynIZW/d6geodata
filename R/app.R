@@ -1,3 +1,11 @@
+#' access shiny app for browse geodata on server and may download them
+#' @name getgeodataApp
+#' @return an app
+#' @export
+#' @examples
+#' \dontrun{
+#' getgeodataApp()
+#' }
 
 library(shiny)
 library(patchwork)
