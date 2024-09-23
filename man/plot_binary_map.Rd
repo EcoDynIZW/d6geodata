@@ -17,6 +17,6 @@ plot binary maps
 }
 \examples{
 \dontrun{
-d6plot_binary_map()
+plot_binary_map()
 }
 }

@@ -8,13 +8,9 @@
 #' }
 
 library(shiny)
-library(patchwork)
-library(shinyWidgets)
 library(terra)
 library(sf)
 library(shinyFiles)
-
-getgeodataApp <- function(){
 
 geopath <- base::readline("path to dep6:")
 
@@ -145,9 +141,17 @@ server <- function(input, output, session) {
 }
 
 # Run the application
-shiny::shinyApp(ui = ui, server = server)
+#shiny::shinyApp(ui = ui, server = server)
 
+getgeodataApp <- function() {
+  shiny_env <- new.env()
+  environment(shiny_ui) <- shiny_env
+  environment(shiny_server) <- shiny_env
+  app <- shiny::shinyApp(
+    ui = ui,
+    server = server
+  )
+  runApp(app, ...)
 }
-
 
 
