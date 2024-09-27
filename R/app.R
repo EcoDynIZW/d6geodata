@@ -1,11 +1,3 @@
-#' access shiny app for browse geodata on server and may download them
-#' @name getgeodataApp
-#' @return an app
-#' @export
-#' @examples
-#' \dontrun{
-#' getgeodataApp()
-#' }
 
 library(shiny)
 library(terra)
@@ -140,18 +132,5 @@ server <- function(input, output, session) {
   })
 }
 
-# Run the application
-#shiny::shinyApp(ui = ui, server = server)
-
-getgeodataApp <- function() {
-  shiny_env <- new.env()
-  environment(shiny_ui) <- shiny_env
-  environment(shiny_server) <- shiny_env
-  app <- shiny::shinyApp(
-    ui = ui,
-    server = server
-  )
-  runApp(app, ...)
-}
 
 
