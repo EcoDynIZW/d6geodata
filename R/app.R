@@ -1,4 +1,6 @@
 
+# function for download geodata
+
 library(shiny)
 
 getgeodataApp <- function() {
