@@ -1,16 +1,5 @@
 
-#' access shiny app for browse geodata on server and may download them
-#' @name getgeodataApp
-#' @return an app
-#' @examples
-#' \dontrun{
-#' getgeodataApp()
-#' }
-
 library(shiny)
-library(terra)
-library(sf)
-library(shinyFiles)
 
 getgeodataApp <- function() {
 
