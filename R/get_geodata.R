@@ -12,10 +12,10 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' get_geodata()
+#' get_geodata_cloud()
 #' }
 
-get_geodata <-
+get_geodata_cloud <-
   function(data_name, path_to_cloud, download_data = FALSE) {
     geo_path <- paste(
       path_to_cloud,

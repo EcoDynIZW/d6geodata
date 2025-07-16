@@ -19,6 +19,6 @@ function for getting copyright of the data
 }
 \examples{
 \dontrun{
-render_geodata()
+get_copyright()
 }
 }

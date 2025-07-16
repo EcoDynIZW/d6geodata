@@ -126,6 +126,121 @@ d6geodata::create_report(path_name = data_name, out_path = paste0(stringi::stri_
     ), collapse = "/")), cats = c())
 ```
 
+# add to geodatabase
+
+## connect to database
+
+```{r}
+source("geodatamanager.R")
+
+con <- dbConnect(RPostgres::Postgres(), dbname = db, host=host_db, port=db_port, user=db_user, password=db_password)  
+
+dbExecute(con, "SET search_path TO geodata")
+```
+
+
+```{r}
+meta$type <- ifelse(grepl(".tif", meta$name), "raster", stringr::str_split(meta$name, "_")[[1]][4])
+meta$region <- stringr::str_split(meta$name, "_")[[1]][2]
+
+id <- dbGetQuery(con, glue::glue("SELECT id FROM geodata.metadata ORDER BY id DESC LIMIT 1;"))
+meta$id <- id
+
+meta$sub_name <- paste0(str_c(stringr::str_split(meta$name, "_")[[1]] %>% str_sub(1,2), collapse = ""), id)
+
+dbExecute(con, glue::glue("
+  INSERT INTO geodata.metadata (sub_name, folder_name, name, type, region, crs, epsg, year_of_data,
+  units_of_data, resolution, type_of_data, type_of_file, source, link_of_source,
+  date_of_compile, copyright, short_description, modified)
+  VALUES (
+  '{meta$sub_name}',
+  '{meta$folder_name}',
+  '{meta$name}',
+  '{meta$type}',
+  '{meta$region}',
+  '{meta$crs}',
+  '{meta$epsg}',
+  '{meta$year_of_data}',
+  '{meta$units_of_data}',
+  '{meta$resolution}',
+  '{meta$type_of_data}',
+  '{meta$type_of_file}',
+  '{meta$source}',
+  '{meta$link_of_source}',
+  '{meta$date_of_compile}',
+  '{meta$copyright}',
+  '{meta$short_description}',
+  '{meta$modified}')
+"))
+
+
+# check number of layers and use the last one
+if(nlyr(tif) >= 10){
+      tif <- data[[nlyr(tif)]]
+      meta$short_description <- "there where several layers and only the last one was used."
+      dbGetQuery(con, glue::glue("UPDATE geodata.metadata 
+                                 SET modified='there where several layers and only the last one was used. Please contact the database manager to get the more or all layers' 
+                                 WHERE sub_name= '",meta$sub_name,"' ;"))
+      
+    }
+
+# cheack if number of cells is to large
+
+    if(ncell(tif) >= 50e+6){
+      
+    nxy <- ceiling(ncell(tif)/50e+6/2)
+    
+    data_split <- SpaDES.tools::splitRaster(tif, ny = nxy, nx = nxy)
+    
+    # data_split <- lapply(data_split, function(x){
+    #   return(crs(x) <- crs(data))})
+    
+    lapply(data_split, function(ras){
+      rpostgis::pgWriteRast(conn = con,
+                      name = c("geodata", meta$sub_name),
+                      raster = ras,
+                      append = TRUE,
+                      overwrite = TRUE,
+                      constraint = TRUE,
+                      blocks = NULL,
+                      bit.depth = NULL)
+
+    }) 
+    } else{
+    
+    rpostgis::pgWriteRast(conn = con,
+                      name = c("geodata", meta$sub_name),
+                      raster = tif,
+                      append = TRUE,
+                      overwrite = TRUE,
+                      constraint = TRUE,
+                      blocks = NULL,
+                      bit.depth = NULL)
+      
+    }
+
+   dbExecute(con, glue::glue("ALTER TABLE geodata.",
+                              meta$sub_name,
+                              " ADD id integer NULL"))
+    
+    dbExecute(con, glue::glue("UPDATE geodata.",
+                              meta$sub_name,
+                              " SET id = ",
+                              id$id))
+    
+  
+rpostgis::dbAddKey(
+  conn = con,
+  name = c("geodata",meta$sub_name),
+  colname = "id",
+  type = c("foreign"),
+  reference = c("geodata", "metadata"),
+  colref = "id",
+  display = TRUE,
+  exec = T)
+
+ dbExecute(con, glue::glue("GRANT SELECT ON TABLE geodata.", meta$sub_name," TO gis_d6;"))
+```
 
 ***
 
