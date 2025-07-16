@@ -147,7 +147,7 @@ fun_source_link <- function(x) {
 #' @export
 #' @examples
 #' \dontrun{
-#' render_geodata()
+#' get_copyright()
 #' }
 
 get_copyright <- function(source, year = lubridate::year(Sys.Date())){
