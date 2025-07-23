@@ -80,8 +80,8 @@ sf::st_write(data, here(path, stringi::stri_replace_last_fixed(data_name, "_", "
 meta <- dplyr::tibble(
   folder_name = data_name,
   name = stringi::stri_replace_last_fixed(data_name, "_", "."),
-  epsg = ,
-  crs = st_crs()$proj4string,
+  epsg = d6geodata:::fun_l_epsg(),
+  crs = sf::st_crs(ifelse(epsg_in %in% 54009, "ESRI:54009", paste0("EPSG:", epsg_in)))$proj4string,
   year_of_data = ,
   units_of_data = "",
   resolution = "",
@@ -92,7 +92,7 @@ meta <- dplyr::tibble(
   short_description = "",
   modified = NA
 ) |> 
-  mutate(link_of_source = d6geodata:::fun_source_link(x = source),
+   mutate(link_of_source = d6geodata:::fun_source_link(x = source),
           copyright = d6geodata:::get_copyright(source))
 
 
