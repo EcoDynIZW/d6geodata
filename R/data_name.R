@@ -20,7 +20,7 @@ data_name <- function(){
 
 # function for length of epsg
 fun_l_epsg <- function(){
-  epsg_in <- base::readline("epsg:")
+  epsg_in <<- as.numeric(base::readline("epsg:"))
   if(suppressWarnings(base::nchar(epsg_in) < 5)){
     epsg_in <- paste0("0", epsg_in)
   }
