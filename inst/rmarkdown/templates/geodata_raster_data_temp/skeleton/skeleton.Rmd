@@ -29,7 +29,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = TRUE, message = TRUE,
 # devtools::install_github("EcoDynIZW/d6")
 # devtools::install_github("EcoDynIZW/d6geodata")
 
-sapply(list("sf", "tidyverse", "terra", "here" , "d6geodata", "d6"), 
+sapply(list("sf", "tidyverse", "terra", "here" , "d6geodata", "d6", "DBI", "rpostgis"), 
        library, character.only = TRUE, logical.return = TRUE)
 ```
 
