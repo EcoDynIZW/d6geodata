@@ -178,6 +178,90 @@ d6geodata::create_report(path_name = data_name, out_path = paste0(stringi::stri_
     ), collapse = "/")), cats = c())
 ```
 
+# add to geodatabase
+
+## connect to database
+
+```{r}
+source("geodatamanager.R")
+
+con <- dbConnect(RPostgres::Postgres(), dbname = db, host=host_db, port=db_port, user=db_user, password=db_password)  
+
+dbExecute(con, "SET search_path TO geodata")
+```
+
+
+```{r}
+meta$type <- ifelse(grepl(".tif", meta$name), "raster", stringr::str_split(meta$name, "_")[[1]][4])
+meta$region <- stringr::str_split(meta$name, "_")[[1]][2]
+
+meta$sub_name <- paste0(str_c(stringr::str_split(meta$folder_name, "_")[[1]] %>% str_sub(1,2), collapse = ""))
+
+meta$geo_id <- NA
+
+dbExecute(con, glue::glue("
+  INSERT INTO geodata.metadata (sub_name, folder_name, name, type, region, crs, epsg, year_of_data,
+  units_of_data, resolution, type_of_data, type_of_file, source, link_of_source,
+  date_of_compile, copyright, short_description, modified)
+  VALUES (
+  '{meta$sub_name}',
+  '{meta$folder_name}',
+  '{meta$name}',
+  '{meta$type}',
+  '{meta$region}',
+  '{meta$crs}',
+  '{meta$epsg}',
+  '{meta$year_of_data}',
+  '{meta$units_of_data}',
+  '{meta$resolution}',
+  '{meta$type_of_data}',
+  '{meta$type_of_file}',
+  '{meta$source}',
+  '{meta$link_of_source}',
+  '{meta$date_of_compile}',
+  '{meta$copyright}',
+  '{meta$short_description}',
+  '{meta$modified}')
+"))
+
+id <- dbGetQuery(con, glue::glue("SELECT geo_id FROM geodata.metadata ORDER BY geo_id DESC LIMIT 1;"))
+
+meta$sub_name <- paste0(str_c(stringr::str_split(meta$folder_name, "_")[[1]] %>% str_sub(1,2), collapse = ""), id)
+
+dbGetQuery(con, glue::glue("UPDATE metadata SET sub_name='",meta$sub_name,"' WHERE geo_id=",id$geo_id,";"))
+
+    data <- st_read(here("data", 
+                        region_tab[x,"region"], 
+                        region_tab[x,"name"],
+                        stringi::stri_replace_last_fixed(region_tab[x,"name"], "_", ".")))
+    
+     dbExecute(con, glue::glue("CREATE TABLE IF NOT EXISTS geodata.",meta$sub_name, "()"))
+
+# data$id <- dbGetQuery(con, glue::glue("SELECT id FROM metadata WHERE sub_name = '", 
+#                                                     region_tab[x,]$sub_name,"'"))$id 
+
+data$geo_id <- geo_id     
+     
+data <- data %>% rename(geometry = "geom")     
+     
+#st_geometry(data)<-"geometry"
+
+st_write(obj = data, 
+         dsn = con, 
+         layer = meta$sub_name, delete_layer = TRUE)
+
+dbExecute(con, paste0("ALTER TABLE geodata.",meta$sub_name,"
+  ADD CONSTRAINT metadata_pkey
+  FOREIGN KEY (geo_id)
+  REFERENCES geodata.metadata (geo_id);
+"))
+
+ dbExecute(con, glue::glue("GRANT SELECT ON TABLE geodata.", meta$sub_name," TO gis_d6;"))
+
+
+
+```
+
 
 ***
 
