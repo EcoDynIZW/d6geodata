@@ -233,15 +233,15 @@ if(nlyr(tif) >= 10){
                               id$geo_id))
 
 
-rpostgis::dbAddKey(
-  conn = con,
-  name = c("geodata",meta$sub_name),
-  colname = "geo_id",
-  type = c("primary"),
-  reference = c("geodata", "metadata"),
-  colref = "geo_id",
-  display = TRUE,
-  exec = T)
+# rpostgis::dbAddKey(
+#   conn = con,
+#   name = c("geodata",meta$sub_name),
+#   colname = "geo_id",
+#   type = c("primary"),
+#   reference = c("geodata", "metadata"),
+#   colref = "geo_id",
+#   display = TRUE,
+#   exec = T)
 
  dbExecute(con, glue::glue("GRANT SELECT ON TABLE geodata.", meta$sub_name," TO gis_d6;"))
 
