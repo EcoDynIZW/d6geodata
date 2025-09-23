@@ -28,7 +28,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = TRUE, message = TRUE,
 ```{r packages}
 # devtools::install_github("EcoDynIZW/d6geodata")
 
-sapply(list("sf", "tidyverse", "terra", "here" , "d6geodata", "DBI", "rpostgis"), 
+sapply(list("sf", "tidyverse", "terra", "here" , "d6geodata", "DBI", "rpostgis", "d6"), 
        library, character.only = TRUE, logical.return = TRUE)
 ```
 
@@ -199,7 +199,7 @@ meta$sub_name <- paste0(str_c(stringr::str_split(meta$folder_name, "_")[[1]] %>%
 
 meta$geo_id <- NA
 
-dbExecute(con, glue::glue("
+DBI::dbExecute(con, glue::glue("
   INSERT INTO geodata.metadata (sub_name, folder_name, name, type, region, crs, epsg, year_of_data,
   units_of_data, resolution, type_of_data, type_of_file, source, link_of_source,
   date_of_compile, copyright, short_description, modified)
@@ -224,40 +224,33 @@ dbExecute(con, glue::glue("
   '{meta$modified}')
 "))
 
-id <- dbGetQuery(con, glue::glue("SELECT geo_id FROM geodata.metadata ORDER BY geo_id DESC LIMIT 1;"))
+id <- DBI::dbGetQuery(con, glue::glue("SELECT geo_id FROM geodata.metadata ORDER BY geo_id DESC LIMIT 1;"))
 
 meta$sub_name <- paste0(str_c(stringr::str_split(meta$folder_name, "_")[[1]] %>% str_sub(1,2), collapse = ""), id)
 
-dbGetQuery(con, glue::glue("UPDATE metadata SET sub_name='",meta$sub_name,"' WHERE geo_id=",id$geo_id,";"))
+DBI::dbGetQuery(con, glue::glue("UPDATE metadata SET sub_name='",meta$sub_name,"' WHERE geo_id=",id$geo_id,";"))
 
-    data <- st_read(here("data", 
-                        region_tab[x,"region"], 
-                        region_tab[x,"name"],
-                        stringi::stri_replace_last_fixed(region_tab[x,"name"], "_", ".")))
+
     
-     dbExecute(con, glue::glue("CREATE TABLE IF NOT EXISTS geodata.",meta$sub_name, "()"))
+DBI::dbExecute(con, glue::glue("CREATE TABLE IF NOT EXISTS geodata.",meta$sub_name, "()"))
 
-# data$id <- dbGetQuery(con, glue::glue("SELECT id FROM metadata WHERE sub_name = '", 
-#                                                     region_tab[x,]$sub_name,"'"))$id 
-
-data$geo_id <- geo_id     
+data$geo_id <- id$geo_id     
      
-data <- data %>% rename(geometry = "geom")     
+#data <- data %>% rename(geometry = "geometry")     
      
 #st_geometry(data)<-"geometry"
 
-st_write(obj = data, 
+sf::st_write(obj = data, 
          dsn = con, 
          layer = meta$sub_name, delete_layer = TRUE)
 
-dbExecute(con, paste0("ALTER TABLE geodata.",meta$sub_name,"
+DBI::dbExecute(con, paste0("ALTER TABLE geodata.",meta$sub_name,"
   ADD CONSTRAINT metadata_pkey
   FOREIGN KEY (geo_id)
   REFERENCES geodata.metadata (geo_id);
 "))
 
- dbExecute(con, glue::glue("GRANT SELECT ON TABLE geodata.", meta$sub_name," TO gis_d6;"))
-
+ DBI::dbExecute(con, glue::glue("GRANT SELECT ON TABLE geodata.", meta$sub_name," TO gis_d6;"))
 
 
 ```
