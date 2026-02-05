@@ -197,8 +197,6 @@ base::file.copy(from = path,
 source("geodatamanager.R")
 
 con <- dbConnect(RPostgres::Postgres(), dbname = db, host=host_db, port=db_port, user=db_user, password=db_password)  
-
-dbExecute(con, "SET search_path TO geodata")
 ```
 
 
@@ -211,7 +209,7 @@ meta$sub_name <- paste0(str_c(stringr::str_split(meta$folder_name, "_")[[1]] %>%
 meta$geo_id <- NA
 
 DBI::dbExecute(con, glue::glue("
-  INSERT INTO geodata.metadata (sub_name, folder_name, name, type, region, crs, epsg, year_of_data,
+  INSERT INTO envdata.metadata (sub_name, folder_name, name, type, region, crs, epsg, year_of_data,
   units_of_data, resolution, type_of_data, type_of_file, source, link_of_source,
   date_of_compile, copyright, short_description, modified)
   VALUES (
@@ -235,7 +233,7 @@ DBI::dbExecute(con, glue::glue("
   '{meta$modified}')
 "))
 
-id <- DBI::dbGetQuery(con, glue::glue("SELECT geo_id FROM geodata.metadata ORDER BY geo_id DESC LIMIT 1;"))
+id <- DBI::dbGetQuery(con, glue::glue("SELECT geo_id FROM envdata.metadata ORDER BY geo_id DESC LIMIT 1;"))
 
 meta$sub_name <- paste0(str_c(stringr::str_split(meta$folder_name, "_")[[1]] %>% str_sub(1,2), collapse = ""), id)
 
@@ -243,7 +241,7 @@ DBI::dbGetQuery(con, glue::glue("UPDATE metadata SET sub_name='",meta$sub_name,"
 
 
     
-DBI::dbExecute(con, glue::glue("CREATE TABLE IF NOT EXISTS geodata.",meta$sub_name, "()"))
+DBI::dbExecute(con, glue::glue("CREATE TABLE IF NOT EXISTS envdata.",meta$sub_name, "()"))
 
 data$geo_id <- id$geo_id     
      
@@ -255,13 +253,13 @@ sf::st_write(obj = data,
          dsn = con, 
          layer = meta$sub_name, delete_layer = TRUE)
 
-DBI::dbExecute(con, paste0("ALTER TABLE geodata.",meta$sub_name,"
+DBI::dbExecute(con, paste0("ALTER TABLE envdata.",meta$sub_name,"
   ADD CONSTRAINT metadata_pkey
   FOREIGN KEY (geo_id)
-  REFERENCES geodata.metadata (geo_id);
+  REFERENCES envdata.metadata (geo_id);
 "))
 
- DBI::dbExecute(con, glue::glue("GRANT SELECT ON TABLE geodata.", meta$sub_name," TO gis_d6;"))
+ DBI::dbExecute(con, glue::glue("GRANT SELECT ON TABLE envdata.", meta$sub_name," TO gis_d6;"))
 
 
 ```

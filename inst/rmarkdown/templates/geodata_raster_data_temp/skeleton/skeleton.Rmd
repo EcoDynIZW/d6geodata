@@ -145,11 +145,10 @@ base::file.copy(from = path,
 source("geodatamanager.R")
 
 con <- dbConnect(RPostgres::Postgres(), dbname = db, host=host_db, port=db_port, user=db_user, password=db_password)  
-
-dbExecute(con, "SET search_path TO geodata")
 ```
 
 
+```{r}
 ```{r}
 meta$type <- ifelse(grepl(".tif", meta$name), "raster", stringr::str_split(meta$name, "_")[[1]][4])
 meta$region <- stringr::str_split(meta$name, "_")[[1]][2]
@@ -159,7 +158,7 @@ meta$sub_name <- paste0(str_c(stringr::str_split(meta$folder_name, "_")[[1]] %>%
 meta$geo_id <- NA
 
 DBI::dbExecute(con, glue::glue("
-  INSERT INTO geodata.metadata (sub_name, folder_name, name, type, region, crs, epsg, year_of_data,
+  INSERT INTO envdata.metadata (sub_name, folder_name, name, type, region, crs, epsg, year_of_data,
   units_of_data, resolution, type_of_data, type_of_file, source, link_of_source,
   date_of_compile, copyright, short_description, modified)
   VALUES (
@@ -183,17 +182,17 @@ DBI::dbExecute(con, glue::glue("
   '{meta$modified}')
 "))
 
-id <- DBI::dbGetQuery(con, glue::glue("SELECT geo_id FROM geodata.metadata ORDER BY geo_id DESC LIMIT 1;"))
+id <- DBI::dbGetQuery(con, glue::glue("SELECT geo_id FROM envdata.metadata ORDER BY geo_id DESC LIMIT 1;"))
 
 meta$sub_name <- paste0(str_c(stringr::str_split(meta$folder_name, "_")[[1]] %>% str_sub(1,2), collapse = ""), id)
 
-DBI::dbGetQuery(con, glue::glue("UPDATE metadata SET sub_name='",meta$sub_name,"' WHERE geo_id=",id$geo_id,";"))
+DBI::dbGetQuery(con, glue::glue("UPDATE envdata.metadata SET sub_name='",meta$sub_name,"' WHERE geo_id=",id$geo_id,";"))
 
 # check number of layers and use the last one
 if(nlyr(tif) >= 10){
       tif <- data[[nlyr(tif)]]
       meta$short_description <- "there where several layers and only the last one was used."
-      DBI::dbGetQuery(con, glue::glue("UPDATE geodata.metadata 
+      DBI::dbGetQuery(con, glue::glue("UPDATE envdata.metadata 
                                  SET modified='there where several layers and only the last one was used. Please contact the database manager to get the more or all layers' 
                                  WHERE sub_name= '",meta$sub_name,"' ;"))
       
@@ -212,7 +211,7 @@ if(nlyr(tif) >= 10){
     
     lapply(data_split, function(ras){
       rpostgis::pgWriteRast(conn = con,
-                      name = c("geodata", meta$sub_name),
+                      name = c("envdata", meta$sub_name),
                       raster = ras,
                       append = TRUE,
                       overwrite = TRUE,
@@ -224,7 +223,7 @@ if(nlyr(tif) >= 10){
     } else{
     
     rpostgis::pgWriteRast(conn = con,
-                      name = c("geodata", meta$sub_name),
+                      name = c("envdata", meta$sub_name),
                       raster = tif,
                       append = TRUE,
                       overwrite = TRUE,
@@ -234,11 +233,11 @@ if(nlyr(tif) >= 10){
       
     }
 
-   DBI::dbExecute(con, glue::glue("ALTER TABLE geodata.",
+   DBI::dbExecute(con, glue::glue("ALTER TABLE envdata.",
                               meta$sub_name,
                               " ADD geo_id integer NULL"))
 
-    DBI::dbExecute(con, glue::glue("UPDATE geodata.",
+    DBI::dbExecute(con, glue::glue("UPDATE envdata.",
                               meta$sub_name,
                               " SET geo_id = ",
                               id$geo_id))
@@ -246,18 +245,15 @@ if(nlyr(tif) >= 10){
 
 rpostgis::dbAddKey(
   conn = con,
-  name = c("geodata",meta$sub_name),
+  name = c("envdata",meta$sub_name),
   colname = "geo_id",
   type = c("foreign"),
-  reference = c("geodata", "metadata"),
+  reference = c("envdata", "metadata"),
   colref = "geo_id",
   display = TRUE,
   exec = T)
 
- DBI::dbExecute(con, glue::glue("GRANT SELECT ON TABLE geodata.", meta$sub_name," TO gis_d6;"))
-
-
-
+ DBI::dbExecute(con, glue::glue("GRANT SELECT ON TABLE envdata.", meta$sub_name," TO gis_d6;"))
 ```
 
 ***
