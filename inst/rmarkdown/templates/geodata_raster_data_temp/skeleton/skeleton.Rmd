@@ -149,11 +149,10 @@ con <- dbConnect(RPostgres::Postgres(), dbname = db, host=host_db, port=db_port,
 
 
 ```{r}
-```{r}
 meta$type <- ifelse(grepl(".tif", meta$name), "raster", stringr::str_split(meta$name, "_")[[1]][4])
 meta$region <- stringr::str_split(meta$name, "_")[[1]][2]
 
-meta$sub_name <- paste0(str_c(stringr::str_split(meta$folder_name, "_")[[1]] %>% str_sub(1,2), collapse = ""))
+meta$sub_name <- paste0(str_c(stringr::str_split(meta$name, "_")[[1]] %>% str_sub(1,2), collapse = ""))
 
 meta$geo_id <- NA
 
@@ -184,7 +183,7 @@ DBI::dbExecute(con, glue::glue("
 
 id <- DBI::dbGetQuery(con, glue::glue("SELECT geo_id FROM envdata.metadata ORDER BY geo_id DESC LIMIT 1;"))
 
-meta$sub_name <- paste0(str_c(stringr::str_split(meta$folder_name, "_")[[1]] %>% str_sub(1,2), collapse = ""), id)
+meta$sub_name <- paste0(str_c(stringr::str_split(meta$name, "_")[[1]] %>% str_sub(1,2), collapse = ""), id)
 
 DBI::dbGetQuery(con, glue::glue("UPDATE envdata.metadata SET sub_name='",meta$sub_name,"' WHERE geo_id=",id$geo_id,";"))
 
@@ -204,22 +203,16 @@ if(nlyr(tif) >= 10){
       
     nxy <- ceiling(ncell(tif)/50e+6/2)
     
-    data_split <- SpaDES.tools::splitRaster(tif, ny = nxy, nx = nxy)
     
-    # data_split <- lapply(data_split, function(x){
-    #   return(crs(x) <- crs(data))})
-    
-    lapply(data_split, function(ras){
-      rpostgis::pgWriteRast(conn = con,
+    rpostgis::pgWriteRast(conn = con,
                       name = c("envdata", meta$sub_name),
-                      raster = ras,
+                      raster = tif,
                       append = TRUE,
                       overwrite = TRUE,
                       constraint = TRUE,
-                      blocks = NULL,
+                      blocks = nxy*nxy,
                       bit.depth = NULL)
 
-    }) 
     } else{
     
     rpostgis::pgWriteRast(conn = con,
@@ -254,6 +247,8 @@ rpostgis::dbAddKey(
   exec = T)
 
  DBI::dbExecute(con, glue::glue("GRANT SELECT ON TABLE envdata.", meta$sub_name," TO gis_d6;"))
+
+
 ```
 
 ***
